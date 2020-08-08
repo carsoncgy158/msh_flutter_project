@@ -3,6 +3,6 @@ import 'package:mshmobile/pages/app/app.dart';
 
 /// 静态路由
 var staticRoutes = {
-//  "/log-in": (context) => LoginScreen(), // 登录
-  "/sign-up": (context) => SignupScreen(), // 注册
+//  "/log-in": (context) => LoginPage(), // 登录
+  "/sign-up": (context) => SignupPage(), // 注册
 };
