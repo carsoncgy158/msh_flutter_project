@@ -1,16 +1,29 @@
-# mshmobile
+# 模时 移动端 flutter
 
-A new Flutter application.
+## 运行方法
+* flutter SDK和Dart SDK安装遵循[官网教程](https://flutterchina.club/get-started/install/)即可。
 
-## Getting Started
+* 下载代码后，在android studio。mac端可以测试安卓emulator和苹果机simulator。windows只可以测试安卓emulator。
+* 安卓emulator：
+在android studio右上角，打开AVD manager，配置一个emulator。配置可参考下图，注意Graphics选项选Hardware。
+![安卓emulator配置](/assets/images/signup.png)
+## 项目文件结构
+- assets
+  - fonts
+  - images
 
-This project is a starting point for a Flutter application.
+- lib
+  - common
+    - utils
+    - values
+    - widgets
+  - pages
+    - signup
+    - app
+  - main.dart
+  - routes.dart
+  - global.dart
 
-A few resources to get you started if this is your first Flutter project:
+* main.dart是项目执行的入口，在routes.dart定义好的路由(route)和在global.dart中定义的应用打开之前的一些初始化操作(比如和检查本地cookie，和数据库连接等操作)将会在main.dart中调用执行。之后根据路由设定进入到pages文件夹定义的界面当中。
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* common中，utils存放各个前后端借口等文件，values存放各种静态常量，widgets存放经常使用的自己实现的widgets，比如某些按钮部件等等。
