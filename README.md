@@ -6,7 +6,7 @@
 * 下载代码后，在android studio。mac端可以测试安卓emulator和苹果机simulator。windows只可以测试安卓emulator。
 * 安卓emulator：
 在android studio右上角，打开AVD manager，配置一个emulator。配置可参考下图，注意Graphics选项选Hardware。
-![安卓emulator配置](/assets/images/git_配置.png)
+![安卓emulator配置](git_配置.png)
 ## 项目文件结构
 - assets
   - fonts
