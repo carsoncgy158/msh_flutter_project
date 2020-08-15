@@ -51,6 +51,53 @@ Widget btnFlatButtonWidget({
   );
 }
 
+/// 邀请写作等按钮
+Widget inviteButtonWidget({
+  @required VoidCallback onPressed,
+  double width = 140,
+  double height = 44,
+  double marginLeft = 0,
+  double marginRight = 0,
+  Color color = AppColors.transparentColor,
+  Color textColor = AppColors.firstColor,
+  Color disabledColor = AppColors.transparentColor,
+  Color disabledTextColor = AppColors.firstColor,
+  Color hoverColor = AppColors.thirdColor,
+  String title = "button",
+  Color fontColor = AppColors.firstColor,
+  double fontSize = 18,
+  String fontName = "Montserrat",
+  FontWeight fontWeight = FontWeight.w400,
+  bool haveBorder = true,
+}) {
+  return Container(
+    margin: EdgeInsets.only(
+      left: marginLeft,
+      right: marginRight,
+    ),
+    width: (width),
+    height: (height),
+    child: FlatButton(
+      onPressed: onPressed,
+      shape: RoundedRectangleBorder(
+//        side: Borders.primaryBorder,
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: fontColor,
+          fontFamily: fontName,
+          fontWeight: fontWeight,
+          fontSize: (fontSize),
+          height: 1,
+        ),
+      ),
+    ),
+  );
+}
+
 /// 第三方按钮
 Widget btnFlatButtonBorderOnlyWidget({
   @required VoidCallback onPressed,

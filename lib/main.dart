@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 //      title: 'mopish',
-      initialRoute: '/sign-up',
+      initialRoute: '/app',
       routes: staticRoutes,
 //      home: LoginScreen(),
     );

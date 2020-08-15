@@ -76,17 +76,17 @@ class HttpUtil {
     dio.interceptors.add(NetCache());
 
     // 在调试模式下需要抓包调试，所以我们使用代理，并禁用HTTPS证书校验
-    if (!Global.isRelease && PROXY_ENABLE) {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (client) {
-        client.findProxy = (uri) {
-          return "PROXY $PROXY_IP:$PROXY_PORT";
-        };
-        //代理工具会提供一个抓包的自签名证书，会通不过证书校验，所以我们禁用证书校验
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-      };
-    }
+//    if (!Global.isRelease && PROXY_ENABLE) {
+//      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+//          (client) {
+//        client.findProxy = (uri) {
+//          return "PROXY $PROXY_IP:$PROXY_PORT";
+//        };
+//        //代理工具会提供一个抓包的自签名证书，会通不过证书校验，所以我们禁用证书校验
+//        client.badCertificateCallback =
+//            (X509Certificate cert, String host, int port) => true;
+//      };
+//    }
   }
 
   /*
@@ -204,6 +204,12 @@ class HttpUtil {
       headers = {
         'Authorization': 'Bearer $accessToken',
       };
+    } else {
+      headers = {
+        "X-LC-Id": "thxE3ImtBCsojP7Hgh3C9T6a-gzGzoHsz",
+        "X-LC-Key": "KNSsuNPv7eB2f851IHdImdSW",
+        "Content-Type": "application/json",
+      };
     }
     return headers;
   }
@@ -231,6 +237,7 @@ class HttpUtil {
         "cacheKey": cacheKey,
       });
       Map<String, dynamic> _authorization = getAuthorizationHeader();
+
       if (_authorization != null) {
         requestOptions = requestOptions.merge(headers: _authorization);
       }
