@@ -25,13 +25,19 @@ class _MainPageState extends State<EventPage> {
     _controller = EasyRefreshController();
 
     /// TO DO: load event data
-    _loadDate();
+    _loadData();
+    print('end loading event data');
   }
 
-  _loadDate() async {
+  _loadData() async {
     _eventAllList = await EventAPI.eventAllList();
-//    print('success');
-//    print(_eventAllList.results);
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  _refreshData() async {
+    _eventAllList = await EventAPI.eventAllList();
   }
 
   Widget _buildConferenceButton() {
@@ -128,16 +134,21 @@ class _MainPageState extends State<EventPage> {
             header: ClassicalHeader(),
             onRefresh: () async {
               /// TO DO: refresh conference data
+              await _loadData();
               _controller.finishRefresh();
             },
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: _eventAllList.results.length,
-              itemBuilder: (context, index) {
+            child: _eventAllList != null
+                ? ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: _eventAllList.results.length,
+                    itemBuilder: (context, index) {
 //                return Container();
-                return _buildEventCard(index, _eventAllList);
-              },
-            ),
+                      return _buildEventCard(index, _eventAllList);
+                    },
+                  )
+                : Container(
+                    child: Text('loading data ...'),
+                  ),
           ),
         ),
       ],

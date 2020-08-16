@@ -4,7 +4,8 @@ import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:mshmobile/common/widgets/button.dart';
+import 'package:mshmobile/common/widgets/widgets.dart';
+import 'package:mshmobile/pages/article/article_widgets.dart';
 
 class ArticlePage extends StatefulWidget {
   @override
@@ -13,11 +14,21 @@ class ArticlePage extends StatefulWidget {
 
 class _MainPageState extends State<ArticlePage> {
   EasyRefreshController _controller; // EasyRefresh控制器
+  ArticleResponseEntity _articleAllList;
+  bool draft = false;
 
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> colorCodes = <int>[600, 500, 100];
 
-  _loadDate() {}
+  _loadData() async {
+    final params = {"draft": false, "order": "-createdAt"};
+    _articleAllList = await ArticleAPI.articleAllList(params: params);
+    _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
@@ -26,6 +37,9 @@ class _MainPageState extends State<ArticlePage> {
     _controller = EasyRefreshController();
 
     /// TO DO: load conference data
+//    print('start to load data');
+    _loadData();
+//    print(_articleAllList.results.toString());
   }
 
   Widget _buildConferenceButton() {
@@ -76,23 +90,24 @@ class _MainPageState extends State<ArticlePage> {
         Expanded(
           flex: 1,
           child: EasyRefresh(
-              enableControlFinishRefresh: true,
-              controller: _controller,
-              header: ClassicalHeader(),
-              onRefresh: () async {
-                /// TO DO: refresh conference data
-                _controller.finishRefresh();
-              },
-              child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: entries.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber[colorCodes[index]],
-                      child: Center(child: Text('Entry ${entries[index]}')),
-                    );
-                  })),
+            enableControlFinishRefresh: true,
+            controller: _controller,
+            header: ClassicalHeader(),
+            onRefresh: () async {
+              /// TO DO: refresh conference data
+              await _loadData();
+              _controller.finishRefresh();
+            },
+            child: _articleAllList != null
+                ? ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: _articleAllList.results.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildArticleCard(index, _articleAllList);
+                    },
+                  )
+                : getDummy('loading data ...'),
+          ),
         ),
       ],
     );

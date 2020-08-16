@@ -3,6 +3,7 @@
 //     final eventResponseEntity = eventResponseEntityFromJson(jsonString);
 
 import 'dart:convert';
+import 'package:mshmobile/common/entity/public.dart';
 
 EventResponseEntity eventResponseEntityFromJson(String str) =>
     EventResponseEntity.fromJson(json.decode(str));

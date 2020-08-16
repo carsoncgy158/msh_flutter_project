@@ -6,6 +6,8 @@ import 'package:mshmobile/common/utils/utils.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:mshmobile/common/widgets/button.dart';
 
+import 'conference_widgets.dart';
+
 class ConferencePage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -13,9 +15,19 @@ class ConferencePage extends StatefulWidget {
 
 class _MainPageState extends State<ConferencePage> {
   EasyRefreshController _controller; // EasyRefresh控制器
+  ConferenceResponseEntity _conferenceAllList;
 
   final List<String> entries = <String>['A', 'B', 'C'];
   final List<int> colorCodes = <int>[600, 500, 100];
+
+  _loadData() async {
+    final params = {"isPublic": true, "order": "-createdAt"};
+    _conferenceAllList = await ConferenceAPI.conferenceAllList();
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
@@ -24,6 +36,7 @@ class _MainPageState extends State<ConferencePage> {
     _controller = EasyRefreshController();
 
     /// TO DO: load conference data
+    _loadData();
   }
 
   Widget _buildConferenceButton() {
@@ -74,23 +87,24 @@ class _MainPageState extends State<ConferencePage> {
         Expanded(
           flex: 1,
           child: EasyRefresh(
-              enableControlFinishRefresh: true,
-              controller: _controller,
-              header: ClassicalHeader(),
-              onRefresh: () async {
-                /// TO DO: refresh conference data
-                _controller.finishRefresh();
-              },
-              child: ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: entries.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      height: 50,
-                      color: Colors.amber[colorCodes[index]],
-                      child: Center(child: Text('Entry ${entries[index]}')),
-                    );
-                  })),
+            enableControlFinishRefresh: true,
+            controller: _controller,
+            header: ClassicalHeader(),
+            onRefresh: () async {
+              /// TO DO: refresh conference data
+              await _loadData();
+              _controller.finishRefresh();
+            },
+            child: _conferenceAllList != null
+                ? ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: _conferenceAllList.results.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildConferenceCard(index, _conferenceAllList);
+                    },
+                  )
+                : getDummy('loading data ...'),
+          ),
         ),
       ],
     );
