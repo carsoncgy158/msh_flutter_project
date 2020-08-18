@@ -4,8 +4,10 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/values/values.dart';
+import 'package:mshmobile/common/widgets/toast.dart';
 import 'package:mshmobile/global.dart';
 
 /*
@@ -32,10 +34,10 @@ class HttpUtil {
 
       // baseUrl: storage.read(key: STORAGE_KEY_APIURL) ?? SERVICE_API_BASEURL,
       //连接服务器超时时间，单位是毫秒.
-      connectTimeout: 10000,
+      connectTimeout: 20000,
 
       // 响应流上前后两次接受到数据的间隔，单位为毫秒。
-      receiveTimeout: 5000,
+      receiveTimeout: 10000,
 
       // Http请求头.
       headers: {},
@@ -63,14 +65,33 @@ class HttpUtil {
     dio.interceptors.add(CookieManager(cookieJar));
 
     // 添加拦截器
-    dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      return options; //continue
-    }, onResponse: (Response response) {
-      return response; // continue
-    }, onError: (DioError e) {
-      return createErrorEntity(e);
-    }));
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (RequestOptions options) {
+          return options; //continue
+        },
+        onResponse: (Response response) {
+          return response; // continue
+        },
+        onError: (DioError e) {
+          ErrorEntity eInfo = createErrorEntity(e);
+          // 错误提示
+          toastInfo(msg: eInfo.message);
+          // 错误交互处理
+          var context = e.request.extra["context"];
+          if (context != null) {
+            switch (eInfo.code) {
+              case 401: // 没有权限 重新登录
+                goLoginPage(context);
+                break;
+              default:
+                print("error");
+            }
+          }
+          return eInfo;
+        },
+      ),
+    );
 
     // 加内存缓存
     dio.interceptors.add(NetCache());
@@ -199,10 +220,13 @@ class HttpUtil {
   /// 读取本地配置
   Map<String, dynamic> getAuthorizationHeader() {
     var headers;
-    String accessToken = Global.profile.accessToken;
-    if (accessToken != null) {
+    String sessionToken = Global.profile?.sessionToken;
+    if (sessionToken != null) {
       headers = {
-        'Authorization': 'Bearer $accessToken',
+        "X-LC-Id": "thxE3ImtBCsojP7Hgh3C9T6a-gzGzoHsz",
+        "X-LC-Key": "KNSsuNPv7eB2f851IHdImdSW",
+        "Content-Type": "application/json",
+        "X-LC-Session": sessionToken,
       };
     } else {
       headers = {
@@ -216,16 +240,18 @@ class HttpUtil {
 
   /// restful get 操作
   /// refresh 是否下拉刷新 默认 false
-  /// noCache 是否不缓存 默认 true
+  /// noCache 是否不缓存 默认 trues
   /// list 是否列表 默认 false
   /// cacheKey 缓存key
   Future get(
     String path, {
+    @required BuildContext context,
     dynamic params,
     Options options,
     bool refresh = false,
     bool noCache = !CACHE_ENABLE,
     bool list = false,
+    bool cacheDisk = false,
     String cacheKey,
   }) async {
     try {
@@ -235,6 +261,7 @@ class HttpUtil {
         "noCache": noCache,
         "list": list,
         "cacheKey": cacheKey,
+        "cacheDisk": cacheDisk,
       });
       Map<String, dynamic> _authorization = getAuthorizationHeader();
 
@@ -253,7 +280,12 @@ class HttpUtil {
   }
 
   /// restful post 操作
-  Future post(String path, {dynamic params, Options options}) async {
+  Future post(
+    String path, {
+    @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     if (_authorization != null) {
@@ -265,7 +297,12 @@ class HttpUtil {
   }
 
   /// restful put 操作
-  Future put(String path, {dynamic params, Options options}) async {
+  Future put(
+    String path, {
+    @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     if (_authorization != null) {
@@ -277,7 +314,12 @@ class HttpUtil {
   }
 
   /// restful patch 操作
-  Future patch(String path, {dynamic params, Options options}) async {
+  Future patch(
+    String path, {
+    @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     if (_authorization != null) {
@@ -289,7 +331,12 @@ class HttpUtil {
   }
 
   /// restful delete 操作
-  Future delete(String path, {dynamic params, Options options}) async {
+  Future delete(
+    String path, {
+    @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     if (_authorization != null) {
@@ -301,7 +348,12 @@ class HttpUtil {
   }
 
   /// restful post form 表单提交操作
-  Future postForm(String path, {dynamic params, Options options}) async {
+  Future postForm(
+    String path, {
+    @required BuildContext context,
+    dynamic params,
+    Options options,
+  }) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic> _authorization = getAuthorizationHeader();
     if (_authorization != null) {

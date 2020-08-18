@@ -31,7 +31,6 @@ dependencies:
   dio_cookie_manager: ^1.0.0
 
   # storage 本地缓存
-  localstorage: ^3.0.1+4
   shared_preferences: ^0.5.6+3
   cached_network_image: ^2.0.0
 

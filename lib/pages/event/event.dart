@@ -30,7 +30,9 @@ class _MainPageState extends State<EventPage> {
   }
 
   _loadData() async {
-    _eventAllList = await EventAPI.eventAllList();
+    _eventAllList = await EventAPI.eventAllList(
+      context: context,
+    );
     if (mounted) {
       setState(() {});
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mshmobile/pages/index/index.dart';
 import 'package:provider/provider.dart';
 //import 'package:dynamic_theme/dynamic_theme.dart';
 
@@ -13,9 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 //      title: 'mopish',
-      initialRoute: '/app',
+//      initialRoute: '/app',
       routes: staticRoutes,
-//      home: LoginScreen(),
+      home: IndexPage(),
     );
   }
 }

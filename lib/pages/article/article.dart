@@ -17,12 +17,27 @@ class _MainPageState extends State<ArticlePage> {
   ArticleResponseEntity _articleAllList;
   bool draft = false;
 
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
-
   _loadData() async {
     final params = {"draft": false, "order": "-createdAt"};
-    _articleAllList = await ArticleAPI.articleAllList(params: params);
+    _articleAllList = await ArticleAPI.articleAllList(
+      context: context,
+      params: params,
+      cacheDisk: true,
+    );
+    _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  _refreshData() async {
+    final params = {"draft": false, "order": "-createdAt"};
+    _articleAllList = await ArticleAPI.articleAllList(
+      context: context,
+      params: params,
+      refresh: true,
+    );
     _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
 
     if (mounted) {

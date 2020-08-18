@@ -22,7 +22,10 @@ class _MainPageState extends State<ConferencePage> {
 
   _loadData() async {
     final params = {"isPublic": true, "order": "-createdAt"};
-    _conferenceAllList = await ConferenceAPI.conferenceAllList();
+    _conferenceAllList = await ConferenceAPI.conferenceAllList(
+      context: context,
+      params: params,
+    );
 
     if (mounted) {
       setState(() {});

@@ -10,8 +10,14 @@ import 'package:mshmobile/common/values/values.dart';
 class Global {
   /// 用户配置
   static UserLoginResponseEntity profile = UserLoginResponseEntity(
-    accessToken: null,
+    sessionToken: null,
   );
+
+  /// 是否第一次打开
+  static bool isFirstOpen = false;
+
+  /// 是否离线登录
+  static bool isOfflineLogin = false;
 
   /// 初始化
   static Future init() async {
@@ -27,10 +33,17 @@ class Global {
     // http请求类初始化
     HttpUtil();
 
+    // 读取设备第一次打开
+    isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
+    if (isFirstOpen) {
+      StorageUtil().setBool(STORAGE_DEVICE_ALREADY_OPEN_KEY, true);
+    }
+
     // 读取离线用户信息
     var _profileJSON = StorageUtil().getJSON(STORAGE_USER_PROFILE_KEY);
     if (_profileJSON != null) {
       profile = UserLoginResponseEntity.fromJson(_profileJSON);
+      isOfflineLogin = true;
     }
   }
 

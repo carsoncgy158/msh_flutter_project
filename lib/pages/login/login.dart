@@ -6,34 +6,25 @@ import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../global.dart';
 
-class SignupPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _checkPasswordController =
-      TextEditingController();
 
   String email;
   String password;
-  String checkPassword;
 
-  _handleSignup() async {
+  _handleLogin() async {
     Map<String, dynamic> params = {
       "email": _emailController.value.text,
       "password": AutoSHA256(_passwordController.value.text),
     };
-    await UserAPI.userSignup(
-      context: context,
-      params: params,
-    );
     UserLoginResponseEntity userProfile = await UserAPI.userLogin(
       context: context,
       params: params,
@@ -50,7 +41,7 @@ class _SignupPageState extends State<SignupPage> {
     return Container(
       margin: EdgeInsets.only(top: AutoHeight(80)),
       child: Text(
-        "注册模时",
+        "登录模时",
         textAlign: TextAlign.center,
         style: TextStyle(
           color: AppColors.primaryText,
@@ -63,7 +54,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  // 注册表单
+  // 登录表单
   Widget _buildInputForm() {
     return Container(
       width: AutoWidth(295),
@@ -82,13 +73,6 @@ class _SignupPageState extends State<SignupPage> {
             controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
             hintText: "请输入密码",
-            isPassword: true,
-          ),
-          // password check
-          inputTextEdit(
-            controller: _checkPasswordController,
-            keyboardType: TextInputType.visiblePassword,
-            hintText: "请确认密码",
             isPassword: true,
           ),
 
@@ -134,7 +118,8 @@ class _SignupPageState extends State<SignupPage> {
             child: btnFlatButtonWidget(
               width: AutoWidth(295),
               fontWeight: FontWeight.w600,
-              title: "注册",
+              title: "登录",
+              fontColor: Colors.black,
               onPressed: () {
                 if (!isEmail(_emailController.value.text)) {
                   toastInfo(msg: '请正确输入邮件');
@@ -144,10 +129,8 @@ class _SignupPageState extends State<SignupPage> {
                   toastInfo(msg: '密码不能小于6位');
                   return;
                 }
-                if (password != checkPassword) {
-                  toastInfo(msg: '两次密码输入需要一致');
-                }
-                _handleSignup();
+                _handleLogin();
+//                Navigator.pop(context);
               },
             ),
           ),
@@ -157,26 +140,27 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-// 有账号
+// 没有账号，去注册按钮
   Widget _buildHaveAccountButton() {
     return Container(
       margin: EdgeInsets.only(bottom: AutoHeight(20)),
       child: btnFlatButtonWidget(
         onPressed: () {
           /// To do:
+          Navigator.pushNamed(context, "/sign-up");
         },
         width: 294,
         color: AppColors.transparentColor,
         disabledColor: AppColors.thirdColor,
         fontColor: AppColors.primaryText,
-        title: "已经有模时账号？立即登录",
+        title: "还没有模时账号？立即注册",
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
     );
   }
 
-  // 组织登录
+  // 组织登录按钮
   Widget _buildrOrgSignupButton() {
     return Container(
       margin: EdgeInsets.only(bottom: AutoHeight(20)),
@@ -187,7 +171,7 @@ class _SignupPageState extends State<SignupPage> {
         width: 294,
         color: AppColors.secondaryElement,
         fontColor: AppColors.primaryText,
-        title: "会议主办方和模联组织 注册",
+        title: "会议主办方和模联组织 登录",
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),
@@ -215,7 +199,7 @@ class _SignupPageState extends State<SignupPage> {
               color: AppColors.primaryText,
             ),
             onPressed: () {
-              toastInfo(msg: '用户注册界面');
+              toastInfo(msg: '用户登录界面');
             },
           )
         ],
