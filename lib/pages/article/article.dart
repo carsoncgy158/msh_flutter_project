@@ -51,10 +51,7 @@ class _MainPageState extends State<ArticlePage> {
 
     _controller = EasyRefreshController();
 
-    /// TO DO: load conference data
-//    print('start to load data');
     _loadData();
-//    print(_articleAllList.results.toString());
   }
 
   Widget _buildConferenceButton() {
@@ -109,8 +106,7 @@ class _MainPageState extends State<ArticlePage> {
             controller: _controller,
             header: ClassicalHeader(),
             onRefresh: () async {
-              /// TO DO: refresh conference data
-              await _loadData();
+              await _refreshData();
               _controller.finishRefresh();
             },
             child: _articleAllList != null

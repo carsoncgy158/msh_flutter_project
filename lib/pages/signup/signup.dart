@@ -8,7 +8,7 @@ import 'package:mshmobile/common/widgets/widgets.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../global.dart';
+import 'package:mshmobile/global.dart';
 
 class SignupPage extends StatefulWidget {
   @override

@@ -7,6 +7,8 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:mshmobile/common/widgets/button.dart';
 import 'package:mshmobile/common/widgets/image.dart';
 
+import 'package:mshmobile/pages/event/event_widgets.dart';
+
 class EventPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -82,47 +84,6 @@ class _MainPageState extends State<EventPage> {
     );
   }
 
-  Widget _buildEventCard(int index, EventResponseEntity _eventAllList) {
-    var keyWords = '';
-    _eventAllList.results[index].basicInfo.keyword.forEach((ele) {
-      keyWords += ele;
-    });
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          imageCached(
-            _eventAllList.results[index].cover.url,
-            width: (121),
-            height: (121),
-          ),
-          Container(
-            child: Row(
-              children: <Widget>[
-                Text(dateFunc.weekdayFormat(
-                    _eventAllList.results[index].basicInfo.dateEnd)),
-                Text(dateFunc
-                    .ymdFormat(_eventAllList.results[index].basicInfo.dateEnd)),
-              ],
-            ),
-          ),
-          Container(
-            child: Text(_eventAllList.results[index].basicInfo.type),
-          ),
-          Container(
-            child: Text(_eventAllList.results[index].basicInfo.name),
-          ),
-          keyWords.length > 0
-              ? Container(child: Text(keyWords))
-              : Container(
-                  child: Text(''),
-                )
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -145,7 +106,7 @@ class _MainPageState extends State<EventPage> {
                     itemCount: _eventAllList.results.length,
                     itemBuilder: (context, index) {
 //                return Container();
-                      return _buildEventCard(index, _eventAllList);
+                      return buildEventCard(index, _eventAllList);
                     },
                   )
                 : Container(

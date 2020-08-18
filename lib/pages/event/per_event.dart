@@ -7,22 +7,22 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
 import 'package:mshmobile/pages/article/article_widgets.dart';
 
-class PerArticlePage extends StatefulWidget {
-  final ArticleResult article;
-  PerArticlePage({Key key, this.article}) : super(key: key);
+class PerEventPage extends StatefulWidget {
+  final Result event;
+  PerEventPage({Key key, this.event}) : super(key: key);
 
   @override
-  _PerArticlePageState createState() => _PerArticlePageState();
+  _PerEventPageState createState() => _PerEventPageState();
 }
 
-class _PerArticlePageState extends State<PerArticlePage> {
+class _PerEventPageState extends State<PerEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.article.write.title),
+        title: Text(widget.event.basicInfo.name),
       ),
-      body: getDummy(widget.article.write.title),
+      body: getDummy(widget.event.basicInfo.name),
     );
   }
 }

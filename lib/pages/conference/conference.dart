@@ -17,9 +17,6 @@ class _MainPageState extends State<ConferencePage> {
   EasyRefreshController _controller; // EasyRefresh控制器
   ConferenceResponseEntity _conferenceAllList;
 
-  final List<String> entries = <String>['A', 'B', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
-
   _loadData() async {
     final params = {"isPublic": true, "order": "-createdAt"};
     _conferenceAllList = await ConferenceAPI.conferenceAllList(
