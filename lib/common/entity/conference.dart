@@ -67,7 +67,9 @@ class ConferenceResult {
         updatedAt: DateTime.parse(json["updatedAt"]),
         useMunshare: json["useMunshare"],
         objectId: json["objectId"],
-        cover: ConferenceCover.fromJson(json["cover"]),
+        cover: json["cover"] == null
+            ? null
+            : ConferenceCover.fromJson(json["cover"]),
         createdAt: DateTime.parse(json["createdAt"]),
         isPublic: json["isPublic"],
         online: json["online"],
@@ -94,7 +96,7 @@ class ConferenceResult {
         "updatedAt": updatedAt.toIso8601String(),
         "useMunshare": useMunshare,
         "objectId": objectId,
-        "cover": cover.toJson(),
+        "cover": cover == null ? null : cover.toJson(),
         "createdAt": createdAt.toIso8601String(),
         "isPublic": isPublic,
         "online": online,

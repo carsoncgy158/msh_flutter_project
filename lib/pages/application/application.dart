@@ -158,9 +158,9 @@ class _ApplicationPageState extends State<ApplicationPage>
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         ArticlePage(),
-//        EventPage(),
+        EventPage(),
         ConferencePage(),
-//        WikiPage(),
+        WikiPage(),
         AccountPage(),
       ],
       controller: _pageController,

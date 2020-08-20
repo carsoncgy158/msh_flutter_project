@@ -29,4 +29,13 @@ class UserAPI {
     );
     return UserSignupResponseEntity.fromJson(response);
   }
+
+  static Future<UserArticleResponseEntity> userDetail({
+    @required BuildContext context,
+    String params,
+  }) async {
+    var response =
+        await HttpUtil().get('/1.1/users/${params}', context: context);
+    return UserArticleResponseEntity.fromJson(response);
+  }
 }

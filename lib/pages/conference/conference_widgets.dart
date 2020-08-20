@@ -5,6 +5,7 @@ import 'package:mshmobile/common/router/router.gr.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
 import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/utils/utils.dart';
+import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/pages/conference/per_conference.dart';
 
 Widget buildConferenceCard(
@@ -20,7 +21,9 @@ Widget buildConferenceCard(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           imageCached(
-            conferenceAllList.results[index].cover.url,
+            conferenceAllList.results[index].cover?.url != null
+                ? conferenceAllList.results[index].cover.url
+                : DEFAULT_IMAGE_URL,
             width: (221),
             height: (121),
           ),

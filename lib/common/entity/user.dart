@@ -132,3 +132,50 @@ class UserSignupResponseEntity {
         "objectId": objectId,
       };
 }
+
+UserArticleResponseEntity userArticleResponseEntityFromJson(String str) =>
+    UserArticleResponseEntity.fromJson(json.decode(str));
+
+String userArticleResponseEntityToJson(UserArticleResponseEntity data) =>
+    json.encode(data.toJson());
+
+class UserArticleResponseEntity {
+  UserArticleResponseEntity({
+    this.role,
+    this.intro,
+    this.nameZh,
+    this.avatar,
+    this.createdAt,
+    this.updatedAt,
+    this.objectId,
+  });
+
+  String role;
+  String intro;
+  String nameZh;
+  String avatar;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String objectId;
+
+  factory UserArticleResponseEntity.fromJson(Map<String, dynamic> json) =>
+      UserArticleResponseEntity(
+        role: json["role"],
+        intro: json["intro"],
+        nameZh: json["name_zh"],
+        avatar: json["avatar"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        objectId: json["objectId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "role": role,
+        "intro": intro,
+        "name_zh": nameZh,
+        "avatar": avatar,
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+        "objectId": objectId,
+      };
+}
