@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/values/values.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
 import 'package:mshmobile/pages/article/article_widgets.dart';
 import 'package:share/share.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class PerArticlePage extends StatefulWidget {
   final ArticleResult article;
@@ -50,12 +53,33 @@ class _PerArticlePageState extends State<PerArticlePage> {
               '${publisher.intro}',
             ),
           ),
-          Container(
-            child: Text(parseHtmlString(widget.article.write.body)),
+          Html(
+            data: widget.article.write.body,
+            //Optional parameters:
+
+            customRender: {
+              "flutter": (RenderContext context, Widget child, attributes, _) {
+                return FlutterLogo(
+                  style: (attributes['horizontal'] != null)
+                      ? FlutterLogoStyle.horizontal
+                      : FlutterLogoStyle.markOnly,
+                  textColor: context.style.color,
+                  size: context.style.fontSize.size * 5,
+                );
+              },
+            },
+            onLinkTap: (url) {
+              /// TO DO: 设置同意解决url跳转函数
+              clipBoardCopyInfo(url, "该链接", context: context);
+            },
+            onImageTap: (src) {},
+            onImageError: (exception, stackTrace) {
+//              toastInfo(msg: '图片加载错误');
+            },
           ),
           Container(
-              child:
-                  Text('编辑于${dateFunc.ymdFormat(widget.article.createdAt)}')),
+            child: Text('编辑于${dateFunc.ymdFormat(widget.article.createdAt)}'),
+          ),
           Container(
             child: Text('${widget.article.write.tags}'),
           ),
