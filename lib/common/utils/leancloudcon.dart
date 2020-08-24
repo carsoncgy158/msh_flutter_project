@@ -13,10 +13,12 @@ class LeanCloudLogin {
   static Future<void> init() async {
     LeanCloud.initialize(_appID, _appKey,
         server: _server, queryCache: new LCQueryCache());
+    LCLogger.setLevel(LCLogger.DebugLevel);
+
     print('leancloud connected');
   }
 
-  Future signUp(String username, String email, String password) async {
+  static Future signUp(String username, String email, String password) async {
     LCUser user = LCUser();
 
     user.username = username;
@@ -31,16 +33,22 @@ class LeanCloudLogin {
     return 'sign up success';
   }
 
-  Future login(String username, String password) async {
-    print(username);
-    print(password);
-    LCUser user = await LCUser.login(username, password);
+  static Future<dynamic> login(String email, String password) async {
+    LCUser user = await LCUser.loginByEmail(email, password);
+    print(user.sessionToken);
     print('log in success');
     return 'log in success';
   }
 
-  Future getCurrentUser() async {
+  static Future<dynamic> getCurrentUser() async {
     LCUser currentUser = await LCUser.getCurrent();
     return currentUser;
+  }
+
+  static Future<dynamic> getByObjectId(
+      String objectId, String className) async {
+    LCQuery<LCObject> query = LCQuery(className);
+    LCObject obj = await query.get(objectId);
+    return obj;
   }
 }

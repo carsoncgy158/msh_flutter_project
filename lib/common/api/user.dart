@@ -30,12 +30,21 @@ class UserAPI {
     return UserSignupResponseEntity.fromJson(response);
   }
 
-  static Future<UserArticleResponseEntity> userDetail({
+  static Future<UserArticleResponseEntity> userArticleDetail({
     @required BuildContext context,
     String params,
   }) async {
     var response =
         await HttpUtil().get('/1.1/users/${params}', context: context);
     return UserArticleResponseEntity.fromJson(response);
+  }
+
+  static Future<UserDetailResponseEntity> userInfoDetail({
+    @required BuildContext context,
+    String params,
+  }) async {
+    var response =
+        await HttpUtil().get('/1.1/users/${params}', context: context);
+    return UserDetailResponseEntity.fromJson(response);
   }
 }

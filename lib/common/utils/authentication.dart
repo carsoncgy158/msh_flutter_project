@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mshmobile/common/router/router.gr.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/global.dart';
@@ -20,6 +21,7 @@ Future deleteAuthentication() async {
 /// 重新登录
 Future goLoginPage(BuildContext context) async {
   await deleteAuthentication();
-  Navigator.pushNamedAndRemoveUntil(
-      context, "/log-in", (Route<dynamic> route) => false);
+//  Navigator.pushNamedAndRemoveUntil(
+//      context, "/log-in", (Route<dynamic> route) => false);
+  Navigator.pushNamed(context, Routes.signInPageRoute);
 }

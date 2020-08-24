@@ -122,16 +122,16 @@ class _ApplicationPageState extends State<ApplicationPage>
   // 顶部导航
   Widget _buildAppBar() {
     return transparentAppBar(
-        context: context,
-        title: Text(
-          _tabTitles[_page],
-          style: TextStyle(
-            color: AppColors.primaryText,
-            fontFamily: 'Montserrat',
-            fontSize: (18.0),
-            fontWeight: FontWeight.w600,
-          ),
+      context: context,
+      title: Text(
+        _tabTitles[_page],
+        style: TextStyle(
+          color: AppColors.primaryText,
+          fontFamily: 'Montserrat',
+          fontSize: (18.0),
+          fontWeight: FontWeight.w600,
         ),
+      ),
 //        leading: IconButton(
 //          icon: Icon(
 //            Icons.arrow_back,
@@ -141,15 +141,21 @@ class _ApplicationPageState extends State<ApplicationPage>
 //            Navigator.pop(context);
 //          },
 //        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: AppColors.primaryText,
-            ),
-            onPressed: () {},
-          )
-        ]);
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.search,
+            color: AppColors.primaryText,
+          ),
+          onPressed: () {},
+        ),
+      ],
+      bottom: _tabTitles[_page] == '账号' ? TabBar(
+        tabs: _tabValuesAccount.map((e) => Text(e)).toList(),
+        controller: _tabControllerAccount,
+        isScrollable: true,
+      ) : null,
+    );
   }
 
   // 内容页

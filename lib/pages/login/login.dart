@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
+import 'package:mshmobile/common/router/router.gr.dart';
 
 import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/common/utils/utils.dart';
@@ -30,11 +31,11 @@ class _SignupPageState extends State<LoginPage> {
       params: params,
     );
     Global.saveProfile(userProfile);
-
-    Navigator.pushNamed(
-      context,
-      "/app",
-    );
+    Navigator.pushNamed(context, Routes.applicationPageRoute);
+//    Navigator.pushNamed(
+//      context,
+//      "/app",
+//    );
   }
 
   Widget _buildLogo() {

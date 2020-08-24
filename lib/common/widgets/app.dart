@@ -5,6 +5,7 @@ Widget transparentAppBar({
   @required BuildContext context,
   Widget title,
   Widget leading,
+  Widget bottom,
   List<Widget> actions,
 }) {
   return AppBar(
@@ -15,5 +16,6 @@ Widget transparentAppBar({
     ),
     leading: leading,
     actions: actions,
+    bottom: bottom,
   );
 }

@@ -134,69 +134,78 @@ class _PerConferencePageState extends State<PerConferencePage>
 
   Widget _buildConferenceTeam() {
     return Container(
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: widget.conference.teams.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListTile(
-                  leading: Icon(Icons.person_outline),
-                  title: Text(widget.conference.teams[index].position),
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: Text(widget.conference.teams[index].nameZh),
-                ),
-                ListTile(
-                  leading: Icon(Icons.school),
-                  title: Text(
-                      '${widget.conference.teams[index].school} ${widget.conference.teams[index].major}'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.link),
-                  title: Text('${widget.conference.teams[index].munshareLink}'),
-                ),
-                Text('模联经历：\n ${widget.conference.teams[index].intro}'),
-              ],
-            ),
-          );
-        },
-      ),
+      child: widget.conference.teams?.length != null
+          ? ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: widget.conference.teams?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.person_outline),
+                        title: Text(widget.conference.teams[index].position),
+                      ),
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text(widget.conference.teams[index].nameZh),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.school),
+                        title: Text(
+                            '${widget.conference.teams[index].school} ${widget.conference.teams[index].major}'),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.link),
+                        title: Text(
+                            '${widget.conference.teams[index].munshareLink}'),
+                      ),
+                      Text('模联经历：\n ${widget.conference.teams[index].intro}'),
+                    ],
+                  ),
+                );
+              },
+            )
+          : getDummy('暂时没有相关信息'),
     );
   }
 
   Widget _buildConferenceCommittee() {
     return Container(
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: widget.conference.committees.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(widget.conference.committees[index].nameZh),
-                Divider(
-                  color: Colors.black,
-                ),
-                Text('代表制：${widget.conference.committees[index].delegation}'),
-                Text('工作语言：${widget.conference.committees[index].language}'),
-                Text('代表人数：${widget.conference.committees[index].people}'),
-                Text('议题：${widget.conference.committees[index].topic}'),
-                Text('委员会介绍：\n ${widget.conference.committees[index].intro}'),
-              ],
-            ),
-          );
-        },
-      ),
+      child: widget.conference.committees?.length != null
+          ? ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: widget.conference.committees?.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.conference.committees[index].nameZh),
+                      Divider(
+                        color: Colors.black,
+                      ),
+                      Text(
+                          '代表制：${widget.conference.committees[index].delegation}'),
+                      Text(
+                          '工作语言：${widget.conference.committees[index].language}'),
+                      Text(
+                          '代表人数：${widget.conference.committees[index].people}'),
+                      Text('议题：${widget.conference.committees[index].topic}'),
+                      Text(
+                          '委员会介绍：\n ${widget.conference.committees[index].intro}'),
+                    ],
+                  ),
+                );
+              },
+            )
+          : getDummy('暂时没有相关信息'),
     );
   }
 
@@ -224,7 +233,10 @@ class _PerConferencePageState extends State<PerConferencePage>
               child: Row(
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage: NetworkImage(widget.conference.avatar.url),
+                    backgroundImage: NetworkImage(
+                        widget.conference.avatar?.url != null
+                            ? widget.conference.avatar.url
+                            : DEFAULT_IMAGE_URL),
 //                    onBackgroundImageError: ImageErrorListener(),
                   ),
                   Container(

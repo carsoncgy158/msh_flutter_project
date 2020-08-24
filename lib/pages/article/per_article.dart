@@ -21,7 +21,7 @@ class PerArticlePage extends StatefulWidget {
 
 class _PerArticlePageState extends State<PerArticlePage> {
   Future<UserArticleResponseEntity> _fetchAuthorData() async {
-    return await UserAPI.userDetail(
+    return await UserAPI.userArticleDetail(
         context: context, params: widget.article.dependent.objectId);
   }
 

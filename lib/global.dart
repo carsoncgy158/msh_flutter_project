@@ -13,6 +13,8 @@ class Global {
     sessionToken: null,
   );
 
+  static LeanCloudLogin leanCloud;
+
   /// 是否第一次打开
   static bool isFirstOpen = false;
 
@@ -25,7 +27,7 @@ class Global {
     WidgetsFlutterBinding.ensureInitialized();
 
     // leancloud 连接
-    await LeanCloudLogin.init();
+//    await LeanCloudLogin.init();
 
     // 本地缓存功能初始
     await StorageUtil.init();
