@@ -27,6 +27,11 @@ class _ApplicationPageState extends State<ApplicationPage>
     '模联百科',
     '账号',
   ];
+
+  final List<String> _tabValuesAccount = ['模联ID', '我的信息'];
+
+  TabController _tabControllerAccount;
+
   // 页控制器
   PageController _pageController;
 
@@ -98,6 +103,8 @@ class _ApplicationPageState extends State<ApplicationPage>
   void _handleNavBarTap(int index) {
     _pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    _tabControllerAccount = TabController(
+        length: _tabValuesAccount.length, vsync: ScrollableState());
   }
 
   // tab栏页码切换
@@ -150,11 +157,18 @@ class _ApplicationPageState extends State<ApplicationPage>
           onPressed: () {},
         ),
       ],
-      bottom: _tabTitles[_page] == '账号' ? TabBar(
-        tabs: _tabValuesAccount.map((e) => Text(e)).toList(),
-        controller: _tabControllerAccount,
-        isScrollable: true,
-      ) : null,
+      bottom: _tabTitles[_page] == '账号'
+          ? TabBar(
+              tabs: _tabValuesAccount
+                  .map((e) => Text(
+                        e,
+                        style: TextStyle(color: Colors.black),
+                      ))
+                  .toList(),
+              controller: _tabControllerAccount,
+              isScrollable: true,
+            )
+          : null,
     );
   }
 
@@ -167,7 +181,10 @@ class _ApplicationPageState extends State<ApplicationPage>
         EventPage(),
         ConferencePage(),
         WikiPage(),
-        AccountPage(),
+        AccountPage(
+          tabValues: _tabValuesAccount,
+          tabController: _tabControllerAccount,
+        ),
       ],
       controller: _pageController,
       onPageChanged: _handlePageChanged,
