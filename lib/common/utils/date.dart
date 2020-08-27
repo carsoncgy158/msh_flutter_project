@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 class dateFunc {
   /// 获取ymd格式化时间
   static String ymdFormat(DateTime dt) {
+    if (dt == null) return null;
     final dtFormat = new DateFormat('yyyy-MM-dd');
     var str = dtFormat.format(dt);
     return str;

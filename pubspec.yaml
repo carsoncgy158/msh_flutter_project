@@ -67,6 +67,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/signup.jpg
+    - assets/images/logo_white.png
   fonts:
     - family: Avenir
       fonts:

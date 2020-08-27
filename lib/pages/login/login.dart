@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
@@ -32,15 +33,13 @@ class _SignupPageState extends State<LoginPage> {
     );
     Global.saveProfile(userProfile);
     Navigator.pushNamed(context, Routes.applicationPageRoute);
-//    Navigator.pushNamed(
-//      context,
-//      "/app",
-//    );
   }
 
   Widget _buildLogo() {
     return Container(
-      margin: EdgeInsets.only(top: AutoHeight(80)),
+      margin: EdgeInsets.only(
+        top: AutoHeight(100),
+      ),
       child: Text(
         "登录模时",
         textAlign: TextAlign.center,
@@ -49,7 +48,6 @@ class _SignupPageState extends State<LoginPage> {
           fontFamily: "Montserrat",
           fontWeight: FontWeight.w400,
           fontSize: AutoFontSize(20),
-          height: 1,
         ),
       ),
     );
@@ -68,59 +66,41 @@ class _SignupPageState extends State<LoginPage> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             hintText: "请输入邮箱地址",
+            marginTop: AutoHeight(20),
           ),
           // password input
           inputTextEdit(
             controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
             hintText: "请输入密码",
+            marginTop: AutoHeight(20),
             isPassword: true,
           ),
 
-          // 同意协议
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text('注册即代表同意'),
-                FlatButton(
-                  onPressed: () {
-                    /// TO DO
-                  },
-                  child: Text(
-                    '用户协议',
-                    style: TextStyle(
-                      fontSize: AutoFontSize(13),
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-                Text('与'),
-                FlatButton(
-                  onPressed: () {
-                    /// TO DO
-                  },
-                  child: Text(
-                    '隐私政策',
-                    style: TextStyle(
-                      fontSize: AutoFontSize(13),
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // 注册按钮
+          // 登录按钮
           Container(
             height: AutoHeight(44),
-            margin: EdgeInsets.only(top: AutoHeight(15)),
-            child: btnFlatButtonWidget(
-              width: AutoWidth(295),
-              fontWeight: FontWeight.w600,
-              title: "登录",
-              fontColor: Colors.black,
+            width: AutoWidth(295),
+            margin: EdgeInsets.only(
+              top: AutoHeight(25),
+            ),
+            child: FlatButton(
+              color: AppColors.firstColor,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(width: 0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                '登录',
+                style: TextStyle(
+                  fontSize: AutoFontSize(17),
+                  letterSpacing: AutoWidth(6),
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
               onPressed: () {
                 if (!isEmail(_emailController.value.text)) {
                   toastInfo(msg: '请正确输入邮件');
@@ -144,37 +124,22 @@ class _SignupPageState extends State<LoginPage> {
 // 没有账号，去注册按钮
   Widget _buildHaveAccountButton() {
     return Container(
-      margin: EdgeInsets.only(bottom: AutoHeight(20)),
-      child: btnFlatButtonWidget(
+      width: 294,
+      margin: EdgeInsets.only(top: AutoHeight(20)),
+      child: FlatButton(
         onPressed: () {
-          /// To do:
-          Navigator.pushNamed(context, "/sign-up");
+          ExtendedNavigator.rootNavigator.pushNamed(Routes.signUpPageRoute);
         },
-        width: 294,
         color: AppColors.transparentColor,
         disabledColor: AppColors.thirdColor,
-        fontColor: AppColors.primaryText,
-        title: "还没有模时账号？立即注册",
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-      ),
-    );
-  }
-
-  // 组织登录按钮
-  Widget _buildrOrgSignupButton() {
-    return Container(
-      margin: EdgeInsets.only(bottom: AutoHeight(20)),
-      child: btnFlatButtonWidget(
-        onPressed: () {
-          /// To do:
-        },
-        width: 294,
-        color: AppColors.secondaryElement,
-        fontColor: AppColors.primaryText,
-        title: "会议主办方和模联组织 登录",
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
+        child: Text(
+          '还没有模时账号？立即注册',
+          style: TextStyle(
+            color: AppColors.firstColor,
+            fontWeight: FontWeight.w700,
+            fontSize: AutoFontSize(14),
+          ),
+        ),
       ),
     );
   }
@@ -184,15 +149,22 @@ class _SignupPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-//        leading: IconButton(
-//          icon: Icon(
-//            Icons.arrow_back,
-//            color: AppColors.primaryText,
-//          ),
-//          onPressed: () {
-//            Navigator.pop(context);
-//          },
-//        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppColors.primaryText,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Container(
+          child: Image(
+            height: AutoHeight(120),
+            image: AssetImage('assets/images/logo_white.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -207,11 +179,7 @@ class _SignupPageState extends State<LoginPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xBDD8CA),
-          image: DecorationImage(
-            image: AssetImage("assets/images/signup.jpg"),
-            fit: BoxFit.cover,
-          ),
+          color: AppColors.BackgroudColor,
         ),
         child: Column(
 //          mainAxisSize: MainAxisSize.min,
@@ -220,7 +188,6 @@ class _SignupPageState extends State<LoginPage> {
             _buildLogo(),
             _buildInputForm(),
             _buildHaveAccountButton(),
-            _buildrOrgSignupButton(),
           ],
         ),
       ),

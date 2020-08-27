@@ -40,71 +40,122 @@ class _PerArticlePageState extends State<PerArticlePage> {
   }
 
   _buildArticleView(UserArticleResponseEntity publisher) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(publisher.avatar),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: AutoWidth(8),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(publisher.avatar),
+              ),
+              title: Text('${publisher.nameZh}'),
+              subtitle: Text(
+                '${publisher.intro}',
+              ),
             ),
-            title: Text('${publisher.nameZh}'),
-            subtitle: Text(
-              '${publisher.intro}',
-            ),
-          ),
-          Html(
-            data: widget.article.write.body,
-            //Optional parameters:
+            Html(
+              data: widget.article.write.body,
+              //Optional parameters:
 
-            customRender: {
-              "flutter": (RenderContext context, Widget child, attributes, _) {
-                return FlutterLogo(
-                  style: (attributes['horizontal'] != null)
-                      ? FlutterLogoStyle.horizontal
-                      : FlutterLogoStyle.markOnly,
-                  textColor: context.style.color,
-                  size: context.style.fontSize.size * 5,
-                );
+              customRender: {
+                "flutter":
+                    (RenderContext context, Widget child, attributes, _) {
+                  return FlutterLogo(
+                    style: (attributes['horizontal'] != null)
+                        ? FlutterLogoStyle.horizontal
+                        : FlutterLogoStyle.markOnly,
+                    textColor: context.style.color,
+                    size: context.style.fontSize.size * 5,
+                  );
+                },
               },
-            },
-            onLinkTap: (url) {
-              /// TO DO: 设置同意解决url跳转函数
-              clipBoardCopyInfo(url, "该链接", context: context);
-            },
-            onImageTap: (src) {},
-            onImageError: (exception, stackTrace) {
+              onLinkTap: (url) {
+                /// 设置同意解决url跳转函数
+                clipBoardCopyInfo(url, "该链接", context: context);
+              },
+              onImageTap: (src) {},
+              onImageError: (exception, stackTrace) {
 //              toastInfo(msg: '图片加载错误');
-            },
-          ),
-          Container(
-            child: Text('编辑于${dateFunc.ymdFormat(widget.article.createdAt)}'),
-          ),
-          Container(
-            child: Text('${widget.article.write.tags}'),
-          ),
-          Container(
-            child: IconButton(
-              icon: Icon(
-                Icons.thumb_up,
-              ),
-              onPressed: () {
-                /// TO DO 点赞
               },
             ),
-          ),
-          Container(
-            padding: EdgeInsets.only(bottom: 50),
-            child: IconButton(
-              icon: Icon(
-                Icons.share,
+
+            // 编辑时间
+            Container(
+              child: Text(
+                '编辑于${dateFunc.ymdFormat(widget.article.createdAt)}',
+                style: TextStyle(fontWeight: FontWeight.w200),
               ),
-              onPressed: () {
-                shareFunc();
-              },
             ),
-          ),
-        ],
+
+            // 文章tag
+            Container(
+              child: Wrap(
+                children: widget.article.write.tags
+                    .map((tag) => Container(
+                          padding: EdgeInsets.fromLTRB(AutoWidth(6),
+                              AutoHeight(6), AutoWidth(6), AutoHeight(6)),
+                          margin: EdgeInsets.fromLTRB(
+                              AutoWidth(8), AutoHeight(8), 0, 0),
+                          decoration: BoxDecoration(
+                            color: AppColors.BackgroudColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: InkWell(
+                            radius: 10,
+                            onTap: () {
+                              /// To Do: 点击文章 tag 之后，展示相关的一系列文章
+                            },
+                            child: Text(
+                              '$tag ',
+                              style: TextStyle(
+                                fontSize: AutoFontSize(12),
+                                color: AppColors.firstColor,
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ),
+
+            // 点赞
+            Container(
+              padding: EdgeInsets.only(bottom: 50),
+              child: Row(
+                children: [
+                  Container(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.thumb_up,
+                        color: AppColors.firstColor,
+                      ),
+                      onPressed: () {
+                        /// TO DO 点赞
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.share,
+                        color: AppColors.firstColor,
+                      ),
+                      onPressed: () {
+                        shareFunc();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            //分享
+          ],
+        ),
       ),
     );
   }

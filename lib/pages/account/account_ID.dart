@@ -3,10 +3,10 @@ import 'package:mshmobile/common/entity/user.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/global.dart';
 
-Widget buildAccountID(dynamic profile) {
-  UserDetailResponseEntity _accountProfile = profile;
+Widget buildAccountID(UserDetailResponseEntity profile) {
+  // UserDetailResponseEntity _accountProfile = profile;
 
-  return _accountProfile != 'error'
+  return profile != null
       ? SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -15,10 +15,10 @@ Widget buildAccountID(dynamic profile) {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(_accountProfile.avatar),
+                      backgroundImage: NetworkImage(profile.avatar),
                     ),
                     Container(
-                      child: Text('${_accountProfile.nameZh}'),
+                      child: Text('${profile.nameZh}'),
                     ),
                   ],
                 ),
@@ -38,7 +38,7 @@ Widget buildAccountID(dynamic profile) {
                       color: Colors.black,
                     ),
                     Text(
-                        '自${_accountProfile.munYear ?? '  '}年开始参加模联，共参加${(_accountProfile.muns ?? []).length}场模联会议'),
+                        '自${profile.munYear ?? '  '}年开始参加模联，共参加${(profile.muns ?? []).length}场模联会议'),
                   ],
                 ),
               ),
@@ -52,11 +52,11 @@ Widget buildAccountID(dynamic profile) {
                       height: 5,
                       color: Colors.black,
                     ),
-                    _accountProfile.educations != null
+                    profile.educations != null
                         ? Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _accountProfile.educations
+                              children: profile.educations
                                   .map((edu) => Container(
                                         child: Column(
                                           crossAxisAlignment:
@@ -93,38 +93,47 @@ Widget buildAccountID(dynamic profile) {
                       height: 5,
                       color: Colors.black,
                     ),
-                    _accountProfile.educations != null
+                    profile.muns != null && profile.muns.length != 0
                         ? Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _accountProfile.muns
-                                  .map((mun) => Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                                '会议名称： ${mun.nameZh} ${mun.nameEn}'),
-                                            Text(
-                                                '时间：${dateFunc.ymdFormat(mun.startDate)} 至 ${dateFunc.ymdFormat(mun.endDate)}'),
-                                            Text('地点：${mun.location}'),
-                                            Text(
-                                                '承办组织：${mun.committeeZh} ${mun.committeeEn}'),
-                                            Text('身份：${mun.role}'),
-                                            Text(
-                                                '代表国家：${mun.countryZh} ${mun.countryEn}'),
-                                            Text(
-                                                '委员会：${mun.committeeZh} ${mun.committeeEn}'),
-                                            Text('委员会语言：${mun.language}'),
-                                            Text('议题：${mun.topic}'),
-                                            Text('获奖：${mun.award}'),
-                                            Text('备注：${mun.note}'),
-                                            Divider(
-                                              color: Colors.green,
-                                            ),
-                                          ],
-                                        ),
-                                      ))
+                              children: profile.muns
+                                  .map(
+                                    (mun) => Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              '会议名称： ${mun?.nameZh != null ? mun?.nameZh : null} ${mun.nameEn != null ? mun?.nameEn : null}'),
+                                          Text(
+                                            '时间：${dateFunc.ymdFormat(mun.startDate != null ? mun?.startDate : null)} 至 ${dateFunc.ymdFormat(mun.endDate != null ? mun?.endDate : null)}',
+                                          ),
+                                          Text(
+                                              '地点：${mun.location != null ? mun?.location : null}'),
+                                          Text(
+                                              '承办组织：${mun.committeeZh != null ? mun?.committeeZh : null} ${mun.committeeEn != null ? mun?.committeeEn : null}'),
+                                          Text(
+                                              '身份：${mun.role != null ? mun?.role : null}'),
+                                          Text(
+                                              '代表国家：${mun.countryZh != null ? mun?.countryZh : null} ${mun.countryEn != null ? mun?.countryEn : null}'),
+                                          Text(
+                                              '委员会：${mun.committeeZh != null ? mun?.committeeZh : null} ${mun.committeeEn != null ? mun?.committeeEn : null}'),
+                                          Text(
+                                              '委员会语言：${mun.language != null ? mun?.language : null}'),
+                                          Text(
+                                              '议题：${mun.topic != null ? mun?.topic : null}'),
+                                          Text(
+                                              '获奖：${mun.award != null ? mun?.award : null}'),
+                                          Text(
+                                              '备注：${mun.note != null ? mun?.note : null}'),
+                                          Divider(
+                                            color: Colors.green,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           )

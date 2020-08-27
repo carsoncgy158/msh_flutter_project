@@ -4,13 +4,16 @@ class AppColors {
   static const Color transparentColor = Color(0xFFFFFF);
 
   ///  一级绿色（最深）
-  static const Color firstColor = Color(0x3A8860);
+  static const Color firstColor = Color.fromARGB(255, 58, 136, 96);
 
   ///  二级绿色
-  static const Color secondColor = Color(0x5F8E7E);
+  static const Color secondColor = Color.fromARGB(255, 101, 159, 129);
 
   ///  三级绿色
-  static const Color thirdColor = Color(0xBDD8CA);
+  static const Color thirdColor = Color.fromARGB(255, 171, 204, 188);
+
+  /// 背景颜色
+  static const Color BackgroudColor = Color.fromARGB(255, 220, 234, 227);
 
   /// 主文本 灰色
   static const Color primaryText = Color.fromARGB(255, 45, 45, 47);

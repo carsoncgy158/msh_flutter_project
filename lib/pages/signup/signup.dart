@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
+import 'package:mshmobile/common/router/router.gr.dart';
 
 import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/common/utils/utils.dart';
@@ -40,15 +42,40 @@ class _SignupPageState extends State<SignupPage> {
     );
     Global.saveProfile(userProfile);
 
-    Navigator.pushNamed(
-      context,
-      "/app",
+    Navigator.pushNamed(context, Routes.applicationPageRoute);
+  }
+
+  Future<void> _showContract({String title, String content}) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$title'),
+          titleTextStyle: TextStyle(),
+          content: SingleChildScrollView(
+            child: Html(data: content),
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                '同意',
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   Widget _buildLogo() {
     return Container(
-      margin: EdgeInsets.only(top: AutoHeight(80)),
+      margin: EdgeInsets.only(
+        top: AutoHeight(100),
+      ),
       child: Text(
         "注册模时",
         textAlign: TextAlign.center,
@@ -57,7 +84,6 @@ class _SignupPageState extends State<SignupPage> {
           fontFamily: "Montserrat",
           fontWeight: FontWeight.w400,
           fontSize: AutoFontSize(20),
-          height: 1,
         ),
       ),
     );
@@ -76,12 +102,14 @@ class _SignupPageState extends State<SignupPage> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             hintText: "请输入邮箱地址",
+            marginTop: AutoHeight(20),
           ),
           // password input
           inputTextEdit(
             controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
             hintText: "请输入密码",
+            marginTop: AutoHeight(20),
             isPassword: true,
           ),
           // password check
@@ -89,37 +117,67 @@ class _SignupPageState extends State<SignupPage> {
             controller: _checkPasswordController,
             keyboardType: TextInputType.visiblePassword,
             hintText: "请确认密码",
+            marginTop: AutoHeight(20),
             isPassword: true,
           ),
 
-          // 同意协议
+          // 同意协议和隐私政策
           Container(
+            padding: EdgeInsets.only(top: AutoHeight(6)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('注册即代表同意'),
-                FlatButton(
-                  onPressed: () {
-                    /// TO DO
-                  },
-                  child: Text(
-                    '用户协议',
-                    style: TextStyle(
-                      fontSize: AutoFontSize(13),
-                      decoration: TextDecoration.underline,
+                Text(
+                  '注册即代表同意',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: AutoFontSize(12),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AutoHeight(2),
+                  ),
+                  child: InkWell(
+                    highlightColor: AppColors.secondColor,
+                    onTap: () {
+                      /// TO DO
+                      _showContract(title: '用户协议', content: contractStr);
+                    },
+                    child: Text(
+                      '用户协议',
+                      style: TextStyle(
+                        fontSize: AutoFontSize(13),
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.firstColor,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ),
-                Text('与'),
-                FlatButton(
-                  onPressed: () {
-                    /// TO DO
-                  },
-                  child: Text(
-                    '隐私政策',
-                    style: TextStyle(
-                      fontSize: AutoFontSize(13),
-                      decoration: TextDecoration.underline,
+                Text(
+                  '与',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontSize: AutoFontSize(12),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: AutoWidth(2),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      _showContract(title: '隐私政策', content: policyStr);
+                    },
+                    child: Text(
+                      '隐私政策',
+                      style: TextStyle(
+                        fontSize: AutoFontSize(13),
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.firstColor,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ),
@@ -130,11 +188,27 @@ class _SignupPageState extends State<SignupPage> {
           // 注册按钮
           Container(
             height: AutoHeight(44),
-            margin: EdgeInsets.only(top: AutoHeight(15)),
-            child: btnFlatButtonWidget(
-              width: AutoWidth(295),
-              fontWeight: FontWeight.w600,
-              title: "注册",
+            width: AutoWidth(295),
+            margin: EdgeInsets.only(
+              top: AutoHeight(25),
+            ),
+            child: FlatButton(
+              color: AppColors.firstColor,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(width: 0),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                '注册',
+                style: TextStyle(
+                  fontSize: AutoFontSize(17),
+                  letterSpacing: AutoWidth(6),
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
               onPressed: () {
                 if (!isEmail(_emailController.value.text)) {
                   toastInfo(msg: '请正确输入邮件');
@@ -160,36 +234,22 @@ class _SignupPageState extends State<SignupPage> {
 // 有账号
   Widget _buildHaveAccountButton() {
     return Container(
+      width: 294,
       margin: EdgeInsets.only(bottom: AutoHeight(20)),
-      child: btnFlatButtonWidget(
+      child: FlatButton(
+        child: Text(
+          '已经有模时账号？立即登录',
+          style: TextStyle(
+            color: AppColors.firstColor,
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
+        ),
         onPressed: () {
-          /// To do:
+          Navigator.pushNamed(context, Routes.signInPageRoute);
         },
-        width: 294,
         color: AppColors.transparentColor,
         disabledColor: AppColors.thirdColor,
-        fontColor: AppColors.primaryText,
-        title: "已经有模时账号？立即登录",
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-      ),
-    );
-  }
-
-  // 组织登录
-  Widget _buildrOrgSignupButton() {
-    return Container(
-      margin: EdgeInsets.only(bottom: AutoHeight(20)),
-      child: btnFlatButtonWidget(
-        onPressed: () {
-          /// To do:
-        },
-        width: 294,
-        color: AppColors.secondaryElement,
-        fontColor: AppColors.primaryText,
-        title: "会议主办方和模联组织 注册",
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
       ),
     );
   }
@@ -199,15 +259,22 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-//        leading: IconButton(
-//          icon: Icon(
-//            Icons.arrow_back,
-//            color: AppColors.primaryText,
-//          ),
-//          onPressed: () {
-//            Navigator.pop(context);
-//          },
-//        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppColors.primaryText,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Container(
+          child: Image(
+            height: AutoHeight(120),
+            image: AssetImage('assets/images/logo_white.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -222,11 +289,7 @@ class _SignupPageState extends State<SignupPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xBDD8CA),
-          image: DecorationImage(
-            image: AssetImage("assets/images/signup.jpg"),
-            fit: BoxFit.cover,
-          ),
+          color: AppColors.BackgroudColor,
         ),
         child: Column(
 //          mainAxisSize: MainAxisSize.min,
@@ -235,7 +298,6 @@ class _SignupPageState extends State<SignupPage> {
             _buildLogo(),
             _buildInputForm(),
             _buildHaveAccountButton(),
-            _buildrOrgSignupButton(),
           ],
         ),
       ),

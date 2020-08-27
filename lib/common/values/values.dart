@@ -7,3 +7,4 @@ export 'radii.dart';
 export 'storage.dart';
 export 'cache.dart';
 export 'default.dart';
+export 'string.dart';

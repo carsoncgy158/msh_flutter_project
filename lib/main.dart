@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mshmobile/common/router/router.dart';
+import 'package:mshmobile/common/values/colors.dart';
 import 'package:mshmobile/pages/index/index.dart';
 import 'package:provider/provider.dart';
 //import 'package:dynamic_theme/dynamic_theme.dart';
@@ -20,6 +21,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
 //      title: 'mopish',
 //      initialRoute: '/app',
+      theme: ThemeData(
+        primaryColor: AppColors.firstColor,
+        accentColor: AppColors.firstColor,
+      ),
       routes: staticRoutes,
       home: IndexPage(),
       builder: ExtendedNavigator<MshRouter>(
