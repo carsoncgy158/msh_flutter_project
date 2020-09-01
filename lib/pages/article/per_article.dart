@@ -13,7 +13,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class PerArticlePage extends StatefulWidget {
   final ArticleResult article;
-  PerArticlePage({Key key, this.article}) : super(key: key);
+  PerArticlePage({
+    Key key,
+    this.article,
+  }) : super(key: key);
 
   @override
   _PerArticlePageState createState() => _PerArticlePageState();
@@ -122,7 +125,7 @@ class _PerArticlePageState extends State<PerArticlePage> {
               ),
             ),
 
-            // 点赞
+            // 点赞 分享
             Container(
               padding: EdgeInsets.only(bottom: 50),
               child: Row(

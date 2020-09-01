@@ -43,29 +43,31 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                 Container(
                   child: Wrap(
                     children: _articleAllList.results[index].write.tags
-                        .map((tag) => Container(
-                              padding: EdgeInsets.fromLTRB(AutoWidth(6),
-                                  AutoHeight(6), AutoWidth(6), AutoHeight(6)),
-                              margin: EdgeInsets.fromLTRB(
-                                  AutoWidth(8), AutoHeight(0), 0, 0),
-                              decoration: BoxDecoration(
-                                color: AppColors.BackgroudColor,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: InkWell(
-                                radius: 10,
-                                onTap: () {
-                                  /// To Do: 点击文章 tag 之后，展示相关的一系列文章
-                                },
-                                child: Text(
-                                  '$tag ',
-                                  style: TextStyle(
-                                    fontSize: AutoFontSize(12),
-                                    color: AppColors.firstColor,
-                                  ),
+                        .map(
+                          (tag) => Container(
+                            padding: EdgeInsets.fromLTRB(AutoWidth(6),
+                                AutoHeight(6), AutoWidth(6), AutoHeight(6)),
+                            margin: EdgeInsets.fromLTRB(
+                                AutoWidth(8), AutoHeight(0), 0, 0),
+                            decoration: BoxDecoration(
+                              color: AppColors.BackgroudColor,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: InkWell(
+                              radius: 10,
+                              onTap: () {
+                                /// To Do: 点击文章 tag 之后，展示相关的一系列文章
+                              },
+                              child: Text(
+                                '$tag ',
+                                style: TextStyle(
+                                  fontSize: AutoFontSize(12),
+                                  color: AppColors.firstColor,
                                 ),
                               ),
-                            ))
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),

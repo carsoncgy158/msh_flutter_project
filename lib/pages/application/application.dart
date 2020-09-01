@@ -22,15 +22,17 @@ class _ApplicationPageState extends State<ApplicationPage>
   // tab 页标题
   final List<String> _tabTitles = [
     '文章',
-    '活动',
     '会议',
+    '社交',
     '模联百科',
     '账号',
   ];
 
   final List<String> _tabValuesAccount = ['模联ID', '我的信息'];
+  final List<String> _tabValuesSocial = ['聊天', '社交网络'];
 
   TabController _tabControllerAccount;
+  TabController _tabControllerSocial;
 
   // 页控制器
   PageController _pageController;
@@ -58,7 +60,7 @@ class _ApplicationPageState extends State<ApplicationPage>
         Icons.event,
         color: Colors.black,
       ),
-      title: Text('活动'),
+      title: Text('会议'),
       backgroundColor: Colors.transparent,
     ),
     new BottomNavigationBarItem(
@@ -68,21 +70,21 @@ class _ApplicationPageState extends State<ApplicationPage>
       ),
       activeIcon: Icon(
         Icons.menu,
+        color: Colors.black,
+      ),
+      title: Text('社交'),
+      backgroundColor: Colors.transparent,
+    ),
+    new BottomNavigationBarItem(
+      icon: Icon(
+        Icons.info,
+        color: AppColors.tabBarElement,
+      ),
+      activeIcon: Icon(
+        Icons.info,
         color: Colors.black,
       ),
       title: Text('百科'),
-      backgroundColor: Colors.transparent,
-    ),
-    new BottomNavigationBarItem(
-      icon: Icon(
-        Icons.info,
-        color: AppColors.tabBarElement,
-      ),
-      activeIcon: Icon(
-        Icons.info,
-        color: Colors.black,
-      ),
-      title: Text('会议'),
       backgroundColor: Colors.transparent,
     ),
     new BottomNavigationBarItem(
@@ -103,8 +105,6 @@ class _ApplicationPageState extends State<ApplicationPage>
   void _handleNavBarTap(int index) {
     _pageController.animateToPage(index,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
-    _tabControllerAccount = TabController(
-        length: _tabValuesAccount.length, vsync: ScrollableState());
   }
 
   // tab栏页码切换
@@ -114,10 +114,44 @@ class _ApplicationPageState extends State<ApplicationPage>
     });
   }
 
+  // 添加appbar的bottom
+  TabBar _getAppbarBottom(String title) {
+    if (title == '账号') {
+      return TabBar(
+        tabs: _tabValuesAccount
+            .map((e) => Text(
+                  e,
+                  style: TextStyle(color: Colors.black),
+                ))
+            .toList(),
+        controller: _tabControllerAccount,
+        isScrollable: true,
+      );
+    } else if (title == '社交') {
+      return TabBar(
+        tabs: _tabValuesSocial
+            .map((e) => Text(
+                  e,
+                  style: TextStyle(color: Colors.black),
+                ))
+            .toList(),
+        controller: _tabControllerSocial,
+        isScrollable: true,
+      );
+    } else {
+      return null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _pageController = new PageController(initialPage: this._page);
+    _tabControllerAccount = TabController(
+        length: _tabValuesAccount.length, vsync: ScrollableState());
+
+    _tabControllerSocial = TabController(
+        length: _tabValuesSocial.length, vsync: ScrollableState());
   }
 
   @override
@@ -157,18 +191,7 @@ class _ApplicationPageState extends State<ApplicationPage>
           onPressed: () {},
         ),
       ],
-      bottom: _tabTitles[_page] == '账号'
-          ? TabBar(
-              tabs: _tabValuesAccount
-                  .map((e) => Text(
-                        e,
-                        style: TextStyle(color: Colors.black),
-                      ))
-                  .toList(),
-              controller: _tabControllerAccount,
-              isScrollable: true,
-            )
-          : null,
+      bottom: _getAppbarBottom(_tabTitles[_page]),
     );
   }
 
@@ -178,8 +201,11 @@ class _ApplicationPageState extends State<ApplicationPage>
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         ArticlePage(),
-        EventPage(),
         ConferencePage(),
+        EventPage(
+          tabValues: _tabValuesSocial,
+          tabController: _tabControllerSocial,
+        ),
         WikiPage(),
         AccountPage(
           tabValues: _tabValuesAccount,

@@ -42,77 +42,179 @@ class _PerConferencePageState extends State<PerConferencePage>
 
   Widget _buildConferenceBasicInfo() {
     return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AutoWidth(6),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          //会议英文名
           Container(
-            child: Text(widget.conference.basicInfo.nameEn),
-          ),
-          Container(
-            child: Text(widget.conference.basicInfo.nameZh),
-          ),
-          Container(
-            child: ListTile(
-              leading: Icon(
-                Icons.place,
-              ),
-              title: Text(
-                widget.conference.basicInfo.city.toString(),
+            child: Text(
+              widget.conference.basicInfo.nameEn,
+              style: TextStyle(
+                fontSize: AutoFontSize(15),
+                fontWeight: FontWeight.w700,
+                color: AppColors.firstColor,
               ),
             ),
           ),
+
+          //会议中文名
           Container(
-            child: ListTile(
-              leading: Icon(
-                Icons.event,
-              ),
-              title: Text(
-                dateFunc.ymdFormat(widget.conference.basicInfo.dateStart) +
-                    ' 至 ' +
-                    dateFunc.ymdFormat(widget.conference.basicInfo.dateEnd),
+            margin: EdgeInsets.only(top: AutoHeight(1)),
+            child: Text(
+              widget.conference.basicInfo.nameZh,
+              style: TextStyle(
+                fontSize: AutoFontSize(15),
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
+
+          //会议地点
           Container(
-            child:
-                Text('关键词： ' + widget.conference.basicInfo.keyword.toString()),
-          ),
-          Container(
+            margin: EdgeInsets.only(
+              top: AutoHeight(8),
+            ),
             child: Row(
               children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    /// TO DO 报名会议跳转web
-                  },
-                  child: Text('报名会议'),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.share,
-                    color: AppColors.primaryText,
+                Icon(Icons.location_on),
+                Container(
+                  width: AutoWidth(300),
+                  child: Text(
+                    '${widget.conference.basicInfo.city.join(' ')}',
+                    style: TextStyle(
+                      fontSize: AutoFontSize(13),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  onPressed: () {
-//                                  toastInfo(msg: '分享信息已复制');
-//                                  Timer(Duration(seconds: 1), shareFunc);
-                    shareFunc();
-                    toastInfo(msg: '分享信息已复制');
-                  },
                 ),
               ],
             ),
           ),
-          getDummy('分享dummy'),
+
+          // 会议时间
+          Container(
+            margin: EdgeInsets.only(
+              top: AutoHeight(8),
+            ),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.event),
+                Text(
+                  '${dateFunc.ymdFormat(widget.conference.basicInfo.dateStart)} 至 ${dateFunc.ymdFormat(widget.conference.basicInfo.dateEnd)}',
+                  style: TextStyle(
+                    fontSize: AutoFontSize(13),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // 会议关键词
+          Container(
+            margin: EdgeInsets.only(top: AutoHeight(6)),
+            child: Wrap(
+              direction: Axis.horizontal,
+              children: widget.conference.basicInfo.keyword.map((keyword) {
+                return Container(
+                  padding: EdgeInsets.fromLTRB(
+                      AutoWidth(6), AutoHeight(6), AutoWidth(6), AutoHeight(6)),
+                  margin: EdgeInsets.fromLTRB(
+                      AutoWidth(6), AutoHeight(0), 0, AutoHeight(6)),
+                  decoration: BoxDecoration(
+                    color: AppColors.BackgroudColor,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: InkWell(
+                    radius: 10,
+                    onTap: () {
+                      /// To Do: 点击文章 tag 之后，展示相关的一系列文章
+                    },
+                    child: Text(
+                      '$keyword ',
+                      style: TextStyle(
+                        fontSize: AutoFontSize(12),
+                        color: AppColors.firstColor,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+
+          // 点赞 分享
+          Container(
+            padding: EdgeInsets.only(top: AutoHeight(6)),
+            child: Row(
+              children: [
+                Container(
+                  width: AutoWidth(100),
+                  decoration: BoxDecoration(),
+                  child: FlatButton(
+                    color: AppColors.firstColor,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 0),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      /// TO DO 报名会议跳转web
+                    },
+                    child: Text(
+                      '报名会议',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.thumb_up,
+                      color: AppColors.firstColor,
+                    ),
+                    onPressed: () {
+                      /// TO DO 点赞
+                    },
+                  ),
+                ),
+                Container(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.share,
+                      color: AppColors.firstColor,
+                    ),
+                    onPressed: () {
+                      shareFunc();
+                      toastInfo(msg: '分享信息已复制');
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           Divider(
             color: Colors.black,
           ),
           Container(
+            margin: EdgeInsets.only(
+              top: AutoHeight(6),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('会议地点：' + widget.conference.basicInfo.location),
                 Text('会议费用：' + widget.conference.basicInfo.fee),
                 Text('参会人数：' + widget.conference.basicInfo.people),
                 Text('举办方：' +
-                    widget.conference.basicInfo.organization.toString()),
+                    widget.conference.basicInfo.organization.join(' ')),
                 Text('报名时间：' +
                     widget.conference.basicInfo.signupStart +
                     ' 至 ' +

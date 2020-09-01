@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mshmobile/common/entity/entity.dart';
+import 'package:mshmobile/common/provider/social.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/values/values.dart';
 
@@ -20,6 +21,9 @@ class Global {
 
   /// 是否离线登录
   static bool isOfflineLogin = false;
+
+  /// 状态管理初始化
+  static SocialState socialState = SocialState();
 
   /// 初始化
   static Future init() async {
