@@ -62,6 +62,9 @@ class _AccountPageState extends State<AccountPage> {
                   },
                 ),
                 Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AutoWidth(8),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -190,14 +193,16 @@ class _AccountPageState extends State<AccountPage> {
                             _accountProfile?.keyword != null
                                 ? Row(
                                     children: _accountProfile?.keyword
-                                        ?.map((keyword) => Container(
-                                              child: Text(
-                                                '$keyword ',
-                                                style: TextStyle(
-                                                  fontSize: AutoFontSize(15),
-                                                ),
+                                        ?.map(
+                                          (keyword) => Container(
+                                            child: Text(
+                                              '$keyword ',
+                                              style: TextStyle(
+                                                fontSize: AutoFontSize(15),
                                               ),
-                                            ))
+                                            ),
+                                          ),
+                                        )
                                         ?.toList())
                                 : Container(),
                           ],

@@ -85,44 +85,45 @@ class NetworkPage extends StatefulWidget {
 
 class _NetworkPageState extends State<NetworkPage> {
   @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.followeeInfo != null) {
+      // List<String> followeeObidList = widget.followeeInfo.results.map((ele) {
+      //   return ele.followee.objectId;
+      // }).toList();
+      // Provider.of<SocialState>(context, listen: false).init(followeeObidList);
+    }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // ignore: missing_return
-    return Consumer<SocialState>(
-      // ignore: missing_return
-      builder: (
-        context,
-        socialData,
-        _,
-      ) {
-        if (widget.networkInfo == null || widget.followeeInfo == null)
-          return getDummy('loading data ...');
-        List<String> followeeObidList = widget.followeeInfo.results.map((ele) {
-          return ele.followee.objectId;
-        }).toList();
-
-        socialData.init(followeeObidList);
-
-        return (widget.networkInfo != null && widget.followeeInfo != null)
-            ? ListView.builder(
-                itemCount: widget.networkInfo.results.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    child: Row(
-                      children: [
-                        InkWell(
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    widget.networkInfo.results[index].avatar),
-                              ),
-                              Text(
-                                  '${widget.networkInfo.results[index].nameZh}'),
-                            ],
+    if (widget.networkInfo == null || widget.followeeInfo == null)
+      return getDummy('loading data ...');
+    return (widget.networkInfo != null && widget.followeeInfo != null)
+        ? ListView.builder(
+            itemCount: widget.networkInfo.results.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: Row(
+                  children: [
+                    InkWell(
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                widget.networkInfo.results[index].avatar),
                           ),
-                        ),
-                        Spacer(),
-                        Container(
+                          Text('${widget.networkInfo.results[index].nameZh}'),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    Consumer<SocialState>(
+                      builder: (context, socialData, child) {
+                        return Container(
                           child: (socialData.followeeObidList.contains(
                                   widget.networkInfo.results[index].objectId))
                               ? FlatButton(
@@ -151,13 +152,13 @@ class _NetworkPageState extends State<NetworkPage> {
                                   },
                                   child: Text('关注'),
                                 ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                })
-            : getDummy('loading data');
-      },
-    );
+                  ],
+                ),
+              );
+            })
+        : getDummy('loading data');
   }
 }

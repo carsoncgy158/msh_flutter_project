@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SocialState with ChangeNotifier {
+class SocialState extends ChangeNotifier {
   List<String> _followeeObidList;
   get followeeObidList => _followeeObidList;
 
@@ -12,16 +12,20 @@ class SocialState with ChangeNotifier {
 
   init(List<String> followeeObidList) {
     _followeeObidList = followeeObidList;
-    // notifyListeners();
+    notifyListeners();
   }
 
   add(String Obid) {
-    _followeeObidList.add(Obid);
+    var temp = _followeeObidList;
+    temp.add(Obid);
+    _followeeObidList = temp;
     notifyListeners();
   }
 
   remove(String Obid) {
-    _followeeObidList.remove(Obid);
+    var temp = _followeeObidList;
+    temp.remove(Obid);
+    _followeeObidList = temp;
     notifyListeners();
   }
 }

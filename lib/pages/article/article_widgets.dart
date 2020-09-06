@@ -28,11 +28,13 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
       ),
       child: Row(
         children: <Widget>[
-          imageCached(
-            _articleAllList.results[index].cover,
-            width: AutoWidth(110),
-            height: AutoHeight(110),
-          ),
+          _articleAllList.results[index].cover != null
+              ? imageCached(
+                  _articleAllList.results[index].cover,
+                  width: AutoWidth(110),
+                  height: AutoHeight(110),
+                )
+              : getDummy('str'),
           Container(
             margin: EdgeInsets.only(left: 5),
             child: Column(

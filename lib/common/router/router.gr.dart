@@ -17,6 +17,7 @@ import 'package:mshmobile/common/entity/article.dart';
 import 'package:mshmobile/pages/conference/conference.dart';
 import 'package:mshmobile/pages/conference/per_conference.dart';
 import 'package:mshmobile/common/entity/conference.dart';
+import 'package:mshmobile/pages/conference/register_conference.dart';
 import 'package:mshmobile/pages/event/event.dart';
 import 'package:mshmobile/pages/event/per_event.dart';
 import 'package:mshmobile/common/entity/event.dart';
@@ -32,6 +33,7 @@ abstract class Routes {
   static const perArticlePageRoute = '/per-article-page-route';
   static const conferencePageRoute = '/conference-page-route';
   static const perConferencePage = '/per-conference-page';
+  static const regConferencePage = '/reg-conference-page';
   static const eventPageRoute = '/event-page-route';
   static const perEventPage = '/per-event-page';
   static const applicationPageRoute = '/application-page-route';
@@ -44,6 +46,7 @@ abstract class Routes {
     perArticlePageRoute,
     conferencePageRoute,
     perConferencePage,
+    regConferencePage,
     eventPageRoute,
     perEventPage,
     applicationPageRoute,
@@ -126,9 +129,21 @@ class MshRouter extends RouterBase {
               key: typedArgs.key, conference: typedArgs.conference),
           settings: settings,
         );
-      case Routes.eventPageRoute:
+      case Routes.regConferencePage:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => EventPage(),
+          builder: (context) => RegConferencePage(),
+          settings: settings,
+        );
+      case Routes.eventPageRoute:
+        if (hasInvalidArgs<EventPageArguments>(args)) {
+          return misTypedArgsRoute<EventPageArguments>(args);
+        }
+        final typedArgs = args as EventPageArguments ?? EventPageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => EventPage(
+              key: typedArgs.key,
+              tabValues: typedArgs.tabValues,
+              tabController: typedArgs.tabController),
           settings: settings,
         );
       case Routes.perEventPage:
@@ -186,6 +201,14 @@ class PerConferencePageArguments {
   final Key key;
   final ConferenceResult conference;
   PerConferencePageArguments({this.key, this.conference});
+}
+
+//EventPage arguments holder class
+class EventPageArguments {
+  final Key key;
+  final List<String> tabValues;
+  final TabController tabController;
+  EventPageArguments({this.key, this.tabValues, this.tabController});
 }
 
 //PerEventPage arguments holder class
@@ -248,7 +271,18 @@ extension MshRouterNavigationHelperMethods on ExtendedNavigatorState {
         arguments: PerConferencePageArguments(key: key, conference: conference),
       );
 
-  Future pushEventPageRoute() => pushNamed(Routes.eventPageRoute);
+  Future pushRegConferencePage() => pushNamed(Routes.regConferencePage);
+
+  Future pushEventPageRoute({
+    Key key,
+    List<String> tabValues,
+    TabController tabController,
+  }) =>
+      pushNamed(
+        Routes.eventPageRoute,
+        arguments: EventPageArguments(
+            key: key, tabValues: tabValues, tabController: tabController),
+      );
 
   Future pushPerEventPage({
     Key key,

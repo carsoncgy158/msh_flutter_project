@@ -53,6 +53,9 @@ dependencies:
   # webview
   webview_flutter: ^0.3.22+1
 
+  leancloud_storage: ^0.2.9
+
+
 
 dev_dependencies:
   flutter_test:
@@ -78,3 +81,5 @@ flutter:
         - asset: assets/fonts/Montserrat-SemiBold.ttf
           weight: 600
 
+dependency_overrides:
+  analyzer: '0.39.14'

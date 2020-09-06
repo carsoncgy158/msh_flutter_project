@@ -20,4 +20,6 @@ class ConferenceAPI {
     );
     return ConferenceResponseEntity.fromJson(response);
   }
+
+  static Future<dynamic> confReg() {}
 }

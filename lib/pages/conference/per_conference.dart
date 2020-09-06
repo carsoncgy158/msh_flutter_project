@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mshmobile/common/entity/entity.dart';
+import 'package:mshmobile/common/router/router.gr.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/values/values.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
@@ -164,6 +166,8 @@ class _PerConferencePageState extends State<PerConferencePage>
                     ),
                     onPressed: () {
                       /// TO DO 报名会议跳转web
+                      ExtendedNavigator.rootNavigator
+                          .pushNamed(Routes.regConferencePage);
                     },
                     child: Text(
                       '报名会议',
