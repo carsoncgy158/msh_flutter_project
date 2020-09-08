@@ -11,6 +11,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../global.dart';
 
 class RegConferencePage extends StatefulWidget {
+  final ConferenceResult conference;
+
+  RegConferencePage({Key key, this.conference}) : super(key: key);
+
   @override
   _regConferenceState createState() => _regConferenceState();
 }
@@ -35,13 +39,21 @@ class _regConferenceState extends State<RegConferencePage> {
 
   Widget _buildRegView() {
     return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AutoWidth(10),
+      ),
       child: SingleChildScrollView(
         child: Column(
           children: [
             Row(
               children: [
                 Container(
-                  child: Text('参会身份：'),
+                  child: Text(
+                    '参会身份：',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
                 Container(
                   child: DropdownButton(
@@ -60,9 +72,10 @@ class _regConferenceState extends State<RegConferencePage> {
               ],
             ),
             Container(
+              width: AutoWidth(300),
               child: inputTextEdit(
                 controller: _nameController,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.text,
                 hintText: "姓名",
                 marginTop: AutoHeight(20),
               ),
@@ -70,7 +83,12 @@ class _regConferenceState extends State<RegConferencePage> {
             Row(
               children: [
                 Container(
-                  child: Text('性别：'),
+                  child: Text(
+                    '性别：',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
                 Container(
                   child: DropdownButton(
@@ -89,6 +107,7 @@ class _regConferenceState extends State<RegConferencePage> {
               ],
             ),
             Container(
+              width: AutoWidth(300),
               child: inputTextEdit(
                 controller: _qqController,
                 keyboardType: TextInputType.number,
@@ -97,14 +116,16 @@ class _regConferenceState extends State<RegConferencePage> {
               ),
             ),
             Container(
+              width: AutoWidth(300),
               child: inputTextEdit(
                 controller: _emailController,
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.text,
                 hintText: "邮箱",
                 marginTop: AutoHeight(20),
               ),
             ),
             Container(
+              width: AutoWidth(300),
               child: inputTextEdit(
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
@@ -112,12 +133,31 @@ class _regConferenceState extends State<RegConferencePage> {
                 marginTop: AutoHeight(20),
               ),
             ),
+            // Container(
+            //   child: inputTextEdit(
+            //     controller: _notesController,
+            //     keyboardType: TextInputType.text,
+            //     hintText: "如果有关于住宿，饮食等要求，可以备注给组委会",
+            //     marginTop: AutoHeight(20),
+            //   ),
+            // ),
             Container(
-              child: inputTextEdit(
+              margin: EdgeInsets.only(top: AutoHeight(20)),
+              child: TextField(
                 controller: _notesController,
-                keyboardType: TextInputType.text,
-                hintText: "如果有关于住宿，饮食等要求，可以备注给组委会",
-                marginTop: AutoHeight(20),
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                minLines: 1,
+                decoration: InputDecoration(
+                  hintText: '如果有关于住宿，饮食等要求，可以备注给组委会',
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: AutoWidth(10),
+                    vertical: AutoHeight(4),
+                  ),
+                  isDense: true,
+                ),
               ),
             ),
             Container(
@@ -143,7 +183,7 @@ class _regConferenceState extends State<RegConferencePage> {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_nameController.value.text == '') {
                     toastInfo(msg: '请正确输入姓名');
                     return;
@@ -161,7 +201,19 @@ class _regConferenceState extends State<RegConferencePage> {
                     return;
                   }
 
-                  _handleReg();
+                  _name = _nameController.value.text;
+                  _qq = _qqController.value.text;
+                  _phone = _phoneController.value.text;
+                  _email = _emailController.value.text;
+                  _notes = _notesController.value.text;
+
+                  await _handleReg().then((isRegSuccess) {
+                    isRegSuccess
+                        ? toastInfo(msg: '报名成功')
+                        : toastInfo(msg: '您已经报名');
+                  });
+
+                  // _handleReg();
 //                Navigator.pop(context);
                 },
               ),
@@ -172,13 +224,27 @@ class _regConferenceState extends State<RegConferencePage> {
     );
   }
 
-  _handleReg() {}
+  Future<bool> _handleReg() async {
+    bool res = await LeanCloudLogin.regConfer(
+      userId: Global.profile.objectId,
+      conferObjId: widget.conference.objectId,
+      email: _email,
+      genger: _gender,
+      role: _regIdentity,
+      name: _name,
+      qq: _qq,
+      phone: _phone,
+      note: _notes,
+    );
+    return res;
+  }
+
 // web内容
   Widget _buildWebView() {
     String url =
         "https://www.munshare.com/conference/${Global.profile.objectId}/info";
     return WebView(
-      initialUrl: "http://www.munshare.com/conferences",
+      initialUrl: "http://www.munshare.com",
 
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (WebViewController webViewController) {

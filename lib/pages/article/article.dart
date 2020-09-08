@@ -17,6 +17,7 @@ class _MainPageState extends State<ArticlePage> {
   ArticleResponseEntity _articleAllList;
   bool draft = false;
 
+  // 刚刚进入页面，调用的数据load函数
   _loadData() async {
     final params = {"draft": false, "order": "-createdAt"};
     _articleAllList = await ArticleAPI.articleAllList(
@@ -31,6 +32,7 @@ class _MainPageState extends State<ArticlePage> {
     }
   }
 
+  // 页面刷新的时候调用的函数
   _refreshData() async {
     final params = {"draft": false, "order": "-createdAt"};
     _articleAllList = await ArticleAPI.articleAllList(
@@ -48,9 +50,9 @@ class _MainPageState extends State<ArticlePage> {
   @override
   void initState() {
     super.initState();
-
+    // 刚刚进入页面，初始化 EasyRefresh（提供页面刷新服务的一个第三方库提供的组建）
     _controller = EasyRefreshController();
-
+    // 加载数据，将从leancloud请求得到的数据赋给_articleAllList
     _loadData();
   }
 

@@ -133,7 +133,7 @@ class _PerConferencePageState extends State<PerConferencePage>
                   child: InkWell(
                     radius: 10,
                     onTap: () {
-                      /// To Do: 点击文章 tag 之后，展示相关的一系列文章
+                      /// To Do:
                     },
                     child: Text(
                       '$keyword ',
@@ -165,9 +165,11 @@ class _PerConferencePageState extends State<PerConferencePage>
                       ),
                     ),
                     onPressed: () {
-                      /// TO DO 报名会议跳转web
-                      ExtendedNavigator.rootNavigator
-                          .pushNamed(Routes.regConferencePage);
+                      /// TO DO 报名会议跳转
+                      ExtendedNavigator.rootNavigator.pushNamed(
+                          Routes.regConferencePage,
+                          arguments: RegConferencePageArguments(
+                              conference: widget.conference));
                     },
                     child: Text(
                       '报名会议',

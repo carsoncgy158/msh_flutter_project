@@ -130,8 +130,14 @@ class MshRouter extends RouterBase {
           settings: settings,
         );
       case Routes.regConferencePage:
+        if (hasInvalidArgs<RegConferencePageArguments>(args)) {
+          return misTypedArgsRoute<RegConferencePageArguments>(args);
+        }
+        final typedArgs =
+            args as RegConferencePageArguments ?? RegConferencePageArguments();
         return MaterialPageRoute<dynamic>(
-          builder: (context) => RegConferencePage(),
+          builder: (context) => RegConferencePage(
+              key: typedArgs.key, conference: typedArgs.conference),
           settings: settings,
         );
       case Routes.eventPageRoute:
@@ -203,6 +209,13 @@ class PerConferencePageArguments {
   PerConferencePageArguments({this.key, this.conference});
 }
 
+//RegConferencePage arguments holder class
+class RegConferencePageArguments {
+  final Key key;
+  final ConferenceResult conference;
+  RegConferencePageArguments({this.key, this.conference});
+}
+
 //EventPage arguments holder class
 class EventPageArguments {
   final Key key;
@@ -271,7 +284,14 @@ extension MshRouterNavigationHelperMethods on ExtendedNavigatorState {
         arguments: PerConferencePageArguments(key: key, conference: conference),
       );
 
-  Future pushRegConferencePage() => pushNamed(Routes.regConferencePage);
+  Future pushRegConferencePage({
+    Key key,
+    ConferenceResult conference,
+  }) =>
+      pushNamed(
+        Routes.regConferencePage,
+        arguments: RegConferencePageArguments(key: key, conference: conference),
+      );
 
   Future pushEventPageRoute({
     Key key,

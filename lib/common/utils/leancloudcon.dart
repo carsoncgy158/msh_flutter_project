@@ -46,9 +46,48 @@ class LeanCloudLogin {
   }
 
   static Future<dynamic> getByObjectId(
-      String objectId, String className) async {
+      {String objectId, String className}) async {
     LCQuery<LCObject> query = LCQuery(className);
     LCObject obj = await query.get(objectId);
     return obj;
+  }
+
+  static Future<dynamic> regConfer({
+    String conferObjId,
+    String userId,
+    String email = '',
+    String phone = '',
+    String name = '',
+    String qq = '',
+    String role = '',
+    String genger = '',
+    String note = '',
+  }) async {
+    LCQuery<LCObject> queryCheck = LCQuery('confUserMap');
+    queryCheck.whereEqualTo('confId', '$conferObjId');
+    queryCheck.whereEqualTo('userId', '$userId');
+    List<LCObject> resCheck = await queryCheck.find();
+    print('ssss');
+    print(resCheck.length);
+    if (resCheck.length != 0) {
+      // 如果已经有这个报名信息，那么就通知用户已经报名。
+      return false;
+    } else {
+      // 否则，报名，即插入数据
+      LCObject ob = LCObject('confUserMap');
+      ob['confId'] = conferObjId;
+      ob['userId'] = userId;
+      ob['email'] = email;
+      ob['phone'] = phone;
+      ob['name_zh'] = name;
+      ob['qq'] = qq;
+      ob['role'] = role;
+      ob['genger'] = genger;
+      ob['note'] = note;
+      var resSave = await ob.save();
+      print('检测报名是否成功${resSave}');
+      return true;
+    }
+    return resCheck;
   }
 }
