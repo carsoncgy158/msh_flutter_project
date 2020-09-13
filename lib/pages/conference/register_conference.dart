@@ -8,7 +8,7 @@ import 'package:mshmobile/common/widgets/widgets.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../global.dart';
+import 'package:mshmobile/global.dart';
 
 class RegConferencePage extends StatefulWidget {
   final ConferenceResult conference;

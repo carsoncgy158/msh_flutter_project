@@ -13,7 +13,7 @@ import 'package:mshmobile/pages/login/login.dart';
 import 'package:mshmobile/pages/signup/signup.dart';
 import 'package:mshmobile/pages/article/article.dart';
 import 'package:mshmobile/pages/article/per_article.dart';
-import 'package:mshmobile/common/entity/article.dart';
+import 'package:leancloud_storage/leancloud.dart';
 import 'package:mshmobile/pages/conference/conference.dart';
 import 'package:mshmobile/pages/conference/per_conference.dart';
 import 'package:mshmobile/common/entity/conference.dart';
@@ -21,6 +21,8 @@ import 'package:mshmobile/pages/conference/register_conference.dart';
 import 'package:mshmobile/pages/event/event.dart';
 import 'package:mshmobile/pages/event/per_event.dart';
 import 'package:mshmobile/common/entity/event.dart';
+import 'package:mshmobile/pages/mypage/mypage.dart';
+import 'package:mshmobile/pages/mypage/my_per_conference.dart';
 import 'package:mshmobile/pages/application/application.dart';
 import 'package:mshmobile/common/router/auth_grard.dart';
 
@@ -36,6 +38,8 @@ abstract class Routes {
   static const regConferencePage = '/reg-conference-page';
   static const eventPageRoute = '/event-page-route';
   static const perEventPage = '/per-event-page';
+  static const myPage = '/my-page';
+  static const myPerConferencePage = '/my-per-conference-page';
   static const applicationPageRoute = '/application-page-route';
   static const all = {
     indexPageRoute,
@@ -49,6 +53,8 @@ abstract class Routes {
     regConferencePage,
     eventPageRoute,
     perEventPage,
+    myPage,
+    myPerConferencePage,
     applicationPageRoute,
   };
 }
@@ -163,6 +169,22 @@ class MshRouter extends RouterBase {
               PerEventPage(key: typedArgs.key, event: typedArgs.event),
           settings: settings,
         );
+      case Routes.myPage:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => MyPage(),
+          settings: settings,
+        );
+      case Routes.myPerConferencePage:
+        if (hasInvalidArgs<MyPerConferencePageArguments>(args)) {
+          return misTypedArgsRoute<MyPerConferencePageArguments>(args);
+        }
+        final typedArgs = args as MyPerConferencePageArguments ??
+            MyPerConferencePageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => MyPerConferencePage(
+              key: typedArgs.key, confDetail: typedArgs.confDetail),
+          settings: settings,
+        );
       case Routes.applicationPageRoute:
         if (hasInvalidArgs<ApplicationPageArguments>(args)) {
           return misTypedArgsRoute<ApplicationPageArguments>(args);
@@ -198,7 +220,7 @@ class WelcomePageArguments {
 //PerArticlePage arguments holder class
 class PerArticlePageArguments {
   final Key key;
-  final ArticleResult article;
+  final LCObject article;
   PerArticlePageArguments({this.key, this.article});
 }
 
@@ -229,6 +251,13 @@ class PerEventPageArguments {
   final Key key;
   final Result event;
   PerEventPageArguments({this.key, this.event});
+}
+
+//MyPerConferencePage arguments holder class
+class MyPerConferencePageArguments {
+  final Key key;
+  final LCObject confDetail;
+  MyPerConferencePageArguments({this.key, this.confDetail});
 }
 
 //ApplicationPage arguments holder class
@@ -266,7 +295,7 @@ extension MshRouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushPerArticlePageRoute({
     Key key,
-    ArticleResult article,
+    LCObject article,
   }) =>
       pushNamed(
         Routes.perArticlePageRoute,
@@ -311,6 +340,18 @@ extension MshRouterNavigationHelperMethods on ExtendedNavigatorState {
       pushNamed(
         Routes.perEventPage,
         arguments: PerEventPageArguments(key: key, event: event),
+      );
+
+  Future pushMyPage() => pushNamed(Routes.myPage);
+
+  Future pushMyPerConferencePage({
+    Key key,
+    LCObject confDetail,
+  }) =>
+      pushNamed(
+        Routes.myPerConferencePage,
+        arguments:
+            MyPerConferencePageArguments(key: key, confDetail: confDetail),
       );
 
   Future pushApplicationPageRoute({Key key, OnNavigationRejected onReject}) =>

@@ -1,12 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:leancloud_storage/leancloud.dart';
 import 'package:mshmobile/common/router/router.gr.dart';
 import 'package:mshmobile/common/values/colors.dart';
 import 'package:mshmobile/common/widgets/widgets.dart';
 import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 
-Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
+Widget buildArticleCard(int index, List<LCObject> _articleAllList) {
+  print('before post card');
+  print(_articleAllList[0]);
+  print(_articleAllList[0]['tags']);
+  print(_articleAllList[0]['className'].toString());
+
   return InkWell(
     // borderRadius: Radius.circular(),
 
@@ -16,8 +22,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
       /// TO DO: handle post card tapped
 
       ExtendedNavigator.rootNavigator.pushNamed(Routes.perArticlePageRoute,
-          arguments:
-              PerArticlePageArguments(article: _articleAllList.results[index]));
+          arguments: PerArticlePageArguments(article: _articleAllList[index]));
     },
     child: Container(
       padding:
@@ -28,9 +33,9 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
       ),
       child: Row(
         children: <Widget>[
-          _articleAllList.results[index].cover != null
+          _articleAllList[index]['cover'] != null
               ? imageCached(
-                  _articleAllList.results[index].cover,
+                  _articleAllList[index]['cover'],
                   width: AutoWidth(110),
                   height: AutoHeight(110),
                 )
@@ -44,7 +49,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                 //文章tag
                 Container(
                   child: Wrap(
-                    children: _articleAllList.results[index].write.tags
+                    children: ['test']
                         .map(
                           (tag) => Container(
                             padding: EdgeInsets.fromLTRB(AutoWidth(6),
@@ -61,7 +66,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                                 /// To Do: 点击文章 tag 之后，展示相关的一系列文章
                               },
                               child: Text(
-                                '$tag ',
+                                '${tag.toString()} ',
                                 style: TextStyle(
                                   fontSize: AutoFontSize(12),
                                   color: AppColors.firstColor,
@@ -81,7 +86,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                   ),
                   width: 230,
                   child: Text(
-                    _articleAllList.results[index].write.title.toString(),
+                    _articleAllList[index]['write']['title'].toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -99,7 +104,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                   ),
                   child: Text(
                     parseHtmlString(
-                        _articleAllList.results[index].write.body.toString()),
+                        _articleAllList[index]['write']['body'].toString()),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -116,9 +121,7 @@ Widget buildArticleCard(int index, ArticleResponseEntity _articleAllList) {
                     ),
                   ),
                   child: Text(
-                    '${dateFunc.ymdFormat(
-                      _articleAllList.results[index].createdAt,
-                    )}',
+                    '${dateFunc.ymdFormat(_articleAllList[index]['createdAt'])}',
                     style: TextStyle(
                       fontSize: 10,
                     ),

@@ -52,6 +52,7 @@ class LeanCloudLogin {
     return obj;
   }
 
+  /// 通过 userid 和 会议的 confid 来检查是否已经注册会议，没有注册就注册，否则返回flase
   static Future<dynamic> regConfer({
     String conferObjId,
     String userId,
@@ -88,6 +89,26 @@ class LeanCloudLogin {
       print('检测报名是否成功${resSave}');
       return true;
     }
+  }
+
+  /// 通过用户的objid得到用户注册的会议信息
+  static Future<List<LCObject>> getMyConf({String userId}) async {
+    LCQuery<LCObject> queryCheck = LCQuery('confUserMap');
+    queryCheck.whereEqualTo('userId', '$userId');
+    List<LCObject> resCheck = await queryCheck.find();
     return resCheck;
+  }
+
+  /// 获取所有文章内容
+  static Future<List<LCObject>> getAllPost() async {
+    LCQuery<LCObject> query = LCQuery('post');
+
+    query.whereEqualTo('draft', false);
+    query.orderByDescending('createdAt');
+
+    List<LCObject> res = await query.find();
+    print('in api');
+    // print(res[0]['tags'].toString());
+    return res;
   }
 }

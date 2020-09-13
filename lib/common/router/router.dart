@@ -13,8 +13,10 @@ import 'package:mshmobile/pages/event/event.dart';
 import 'package:mshmobile/pages/event/per_event.dart';
 import 'package:mshmobile/pages/index/index.dart';
 import 'package:mshmobile/pages/login/login.dart';
+import 'package:mshmobile/pages/mypage/my_per_conference.dart';
 import 'package:mshmobile/pages/signup/signup.dart';
 import 'package:mshmobile/pages/welcome/welcome.dart';
+import 'package:mshmobile/pages/mypage/mypage.dart';
 
 @MaterialAutoRouter(generateNavigationHelperExtension: true)
 class $MshRouter {
@@ -36,6 +38,9 @@ class $MshRouter {
 
   EventPage eventPageRoute;
   PerEventPage perEventPage;
+
+  MyPage myPage;
+  MyPerConferencePage myPerConferencePage;
 
   @GuardedBy([AuthGuard])
   ApplicationPage applicationPageRoute;

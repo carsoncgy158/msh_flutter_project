@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:mshmobile/common/router/router.gr.dart';
 import 'package:mshmobile/common/utils/utils.dart';
 import 'package:mshmobile/common/values/values.dart';
 
@@ -88,10 +90,7 @@ class WelcomePage extends StatelessWidget {
       child: FlatButton(
         child: Text("Get started"),
         onPressed: () {
-          Navigator.pushNamed(
-            context,
-            "/log-in",
-          );
+          ExtendedNavigator.rootNavigator.pushNamed(Routes.signInPageRoute);
         },
       ),
     );

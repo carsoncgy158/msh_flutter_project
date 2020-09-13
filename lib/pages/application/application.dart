@@ -7,7 +7,7 @@ import 'package:mshmobile/pages/account/account.dart';
 import 'package:mshmobile/pages/article/article.dart';
 import 'package:mshmobile/pages/conference/conference.dart';
 import 'package:mshmobile/pages/event/event.dart';
-import 'package:mshmobile/pages/wiki/wiki.dart';
+import 'package:mshmobile/pages/mypage/mypage.dart';
 
 class ApplicationPage extends StatefulWidget {
   ApplicationPage({Key key}) : super(key: key);
@@ -25,7 +25,7 @@ class _ApplicationPageState extends State<ApplicationPage>
     '文章',
     '会议',
     '社交',
-    '模联百科',
+    '我的模联',
     '账号',
   ];
 
@@ -85,7 +85,7 @@ class _ApplicationPageState extends State<ApplicationPage>
         Icons.info,
         color: Colors.black,
       ),
-      title: Text('百科'),
+      title: Text('我的模联'),
       backgroundColor: Colors.transparent,
     ),
     new BottomNavigationBarItem(
@@ -207,7 +207,7 @@ class _ApplicationPageState extends State<ApplicationPage>
           tabValues: _tabValuesSocial,
           tabController: _tabControllerSocial,
         ),
-        WikiPage(),
+        MyPage(),
         AccountPage(
           tabValues: _tabValuesAccount,
           tabController: _tabControllerAccount,

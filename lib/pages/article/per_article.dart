@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/html_parser.dart';
+import 'package:leancloud_storage/leancloud.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/values/values.dart';
@@ -12,7 +13,7 @@ import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PerArticlePage extends StatefulWidget {
-  final ArticleResult article;
+  final LCObject article;
   PerArticlePage({
     Key key,
     this.article,
@@ -25,13 +26,13 @@ class PerArticlePage extends StatefulWidget {
 class _PerArticlePageState extends State<PerArticlePage> {
   Future<UserArticleResponseEntity> _fetchAuthorData() async {
     return await UserAPI.userArticleDetail(
-        context: context, params: widget.article.dependent.objectId);
+        context: context, params: widget.article['dependent']['objectId']);
   }
 
   shareFunc() {
     Share.share(
-      '和我一起在模时评论 ${widget.article.write.title}',
-      subject: '和我一起在模时评论 ${widget.article.write.title}',
+      '和我一起在模时评论 ${widget.article['write']['title']}',
+      subject: '和我一起在模时评论 ${widget.article['write']['title']}',
     );
   }
 
@@ -61,7 +62,7 @@ class _PerArticlePageState extends State<PerArticlePage> {
               ),
             ),
             Html(
-              data: widget.article.write.body,
+              data: widget.article['write']['body'],
               //Optional parameters:
 
               customRender: {
@@ -97,7 +98,7 @@ class _PerArticlePageState extends State<PerArticlePage> {
             // 文章tag
             Container(
               child: Wrap(
-                children: widget.article.write.tags
+                children: widget.article['write']['tags']
                     .map((tag) => Container(
                           padding: EdgeInsets.fromLTRB(AutoWidth(6),
                               AutoHeight(6), AutoWidth(6), AutoHeight(6)),
@@ -167,7 +168,7 @@ class _PerArticlePageState extends State<PerArticlePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.article.write.title),
+        title: Text(widget.article['write']['title']),
       ),
       body: FutureBuilder<UserArticleResponseEntity>(
         future: _fetchAuthorData(),

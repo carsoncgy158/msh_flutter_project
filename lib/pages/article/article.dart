@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leancloud_storage/leancloud.dart';
 import 'package:mshmobile/common/api/api.dart';
 import 'package:mshmobile/common/entity/entity.dart';
 import 'package:mshmobile/common/values/values.dart';
@@ -15,17 +16,22 @@ class ArticlePage extends StatefulWidget {
 class _MainPageState extends State<ArticlePage> {
   EasyRefreshController _controller; // EasyRefresh控制器
   ArticleResponseEntity _articleAllList;
+  List<LCObject> _postAllList = null;
   bool draft = false;
 
   // 刚刚进入页面，调用的数据load函数
   _loadData() async {
-    final params = {"draft": false, "order": "-createdAt"};
-    _articleAllList = await ArticleAPI.articleAllList(
-      context: context,
-      params: params,
-      cacheDisk: true,
-    );
-    _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
+    _postAllList = await LeanCloudLogin.getAllPost();
+
+    print(_postAllList[0]['title']);
+    _postAllList.map((e) => {print(e['title'])});
+    // final params = {"draft": false, "order": "-createdAt"};
+    // _articleAllList = await ArticleAPI.articleAllList(
+    //   context: context,
+    //   params: params,
+    //   cacheDisk: true,
+    // );
+    // _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
 
     if (mounted) {
       setState(() {});
@@ -34,13 +40,14 @@ class _MainPageState extends State<ArticlePage> {
 
   // 页面刷新的时候调用的函数
   _refreshData() async {
-    final params = {"draft": false, "order": "-createdAt"};
-    _articleAllList = await ArticleAPI.articleAllList(
-      context: context,
-      params: params,
-      refresh: true,
-    );
-    _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
+    // final params = {"draft": false, "order": "-createdAt"};
+    // _articleAllList = await ArticleAPI.articleAllList(
+    //   context: context,
+    //   params: params,
+    //   refresh: true,
+    // );
+    // _articleAllList.results.retainWhere((ele) => !(ele.draft != false));
+    _postAllList = await LeanCloudLogin.getAllPost();
 
     if (mounted) {
       setState(() {});
@@ -70,7 +77,7 @@ class _MainPageState extends State<ArticlePage> {
               color: AppColors.firstColor,
               disabledColor: AppColors.thirdColor,
               fontColor: AppColors.primaryText,
-              title: "社区规范",
+              title: "文章规范",
               fontWeight: FontWeight.w500,
               fontSize: 15,
             ),
@@ -111,12 +118,12 @@ class _MainPageState extends State<ArticlePage> {
               await _refreshData();
               _controller.finishRefresh();
             },
-            child: _articleAllList != null
+            child: _postAllList != null
                 ? ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: _articleAllList.results.length,
+                    itemCount: _postAllList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return buildArticleCard(index, _articleAllList);
+                      return buildArticleCard(index, _postAllList);
                     },
                   )
                 : getDummy('loading data ...'),

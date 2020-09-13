@@ -1,6 +1,11 @@
 import 'package:intl/intl.dart';
 
 class dateFunc {
+  /// string to datetime
+  static DateTime parseStr(String formattedString) {
+    return DateTime.parse(formattedString);
+  }
+
   /// 获取ymd格式化时间
   static String ymdFormat(DateTime dt) {
     if (dt == null) return null;
